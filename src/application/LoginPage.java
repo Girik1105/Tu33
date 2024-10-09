@@ -15,8 +15,13 @@ import javafx.stage.Stage;
 
 public class LoginPage extends Application {
 	
-	public String blueBackground = "-fx-background-color: lightblue;";
-	public String baseBackground = "floralwhite";
+	public static String blueBackground = "-fx-background-color: lightblue;";
+	public static String baseBackground = "-fx-background-color: floralwhite;";
+	public static String h1 = "-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4b5d75;";
+	public static String h2 = "-fx-font-size: 16px;";
+	public static String h3bold = "-fx-font-size: 14px; -fx-font-weight: bold";
+	public static String errorText = "-fx-text-fill: red";
+	public static String buttonStyle = "-fx-background-color: lightblue; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #4b5d75;";
 
     @Override
     public void start(Stage primaryStage) {
@@ -27,9 +32,9 @@ public class LoginPage extends Application {
     	title.setStyle(blueBackground); // set background color to VBox
     	
     	Label label = new Label("Welcome to BookedIn"); // create label with title
-    	label.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4b5d75;");    	
+    	label.setStyle(h1);    	
     	Text description = new Text("Start by logging in!"); // create text with description
-    	description.setStyle("-fx-font-size: 16px;");
+    	description.setStyle(h2);
     	
     	title.getChildren().addAll(label, description); // add application title and description to VBox
     	
@@ -39,16 +44,19 @@ public class LoginPage extends Application {
     	
         Label usernameLabel = new Label("Username:");
         TextField usernameField = new TextField();
+        usernameLabel.setStyle(h3bold);
         grid.add(usernameLabel, 0,0);
         grid.add(usernameField, 1,0);
 
         Label passwordLabel = new Label("Password:");
         PasswordField passwordField = new PasswordField();
+        passwordLabel.setStyle(h3bold);
         grid.add(passwordLabel, 0,1);
         grid.add(passwordField, 1,1);
 
         Label invitationLabel = new Label("Invitation Code:");
         TextField invitationField = new TextField();
+        invitationLabel.setStyle(h3bold);
         grid.add(invitationLabel, 0,2);
         grid.add(invitationField, 1,2);
 
@@ -64,16 +72,18 @@ public class LoginPage extends Application {
         		primaryStage.setTitle("Account Setup");
         	} else {
         		System.out.println("Invalid credentials!");
-        		 Label errorMessage = new Label("Invalid Credentials. Username/Password or Code Incorrect");
+        		 Label errorMessage = new Label("Username/Password or Code Incorrect");
+        		 errorMessage.setStyle(errorText);
         		 grid.add(errorMessage, 1, 4);
         	}
         });
+        loginButton.setStyle(buttonStyle);
         grid.add(loginButton, 1, 3);
         
       /*** Organizing panels/grids ***********************************/
       VBox layout = new VBox(20);
       layout.setAlignment(Pos.TOP_CENTER);
-      layout.setStyle("-fx-background-color: floralwhite;");
+      layout.setStyle(baseBackground);
       layout.getChildren().addAll(title, grid);
 
       // Scene setup
