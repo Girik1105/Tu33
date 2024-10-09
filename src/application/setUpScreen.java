@@ -66,7 +66,10 @@ public class setUpScreen {
         TextField prefNameTextfield = new TextField();
         setupGrid.add(prefNameTextfield, 1, 4);
         
+<<<<<<< HEAD
         
+=======
+>>>>>>> b6de8c1 (beccas first commit)
         // Create a simple home screen with a logout button
         Button nextBtn = new Button("Done");
         nextBtn.setStyle("-fx-background-color: lightblue; -fx-font-weight: bold;");
