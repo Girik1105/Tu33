@@ -1,5 +1,7 @@
 package application;
 	
+import java.sql.SQLException;
+
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.stage.Stage;
@@ -65,16 +67,30 @@ public class LoginPage extends Application {
         grid.add(loginBtn, 1, 4); // add button to grid
 
         loginBtn.setOnAction(e -> {
-        	String password1 = passwordField.getText(); // get text from password textfield1
+            String password1 = passwordField.getText(); // get text from password textfield1
             String password2 = passwordField2.getText(); // get password from password textfield2
-            
-            if (password1.isEmpty() || password2.isEmpty()) { // if either password is empty
-            	passwordsDontMatch.setText("Password Fields Cannot be Empty!!"); 
-            } else if (!password1.equals(password2)) { // if passwords don't match
-            	passwordsDontMatch.setText("Passwords do not match!");
-            } else { // otherwise, take to setUpScreen
-            	setUpScreen setUpScreen = new setUpScreen();
-            	setUpScreen.start(primaryStage);
+            String username = usernameTextfield.getText(); // get username
+
+            try {
+                DatabaseHelper db = new DatabaseHelper();
+                db.connectToDatabase();
+                
+                if (db.isDatabaseEmpty()) { // First-time setup
+                    if (password1.isEmpty() || password2.isEmpty()) {
+                        passwordsDontMatch.setText("Password Fields Cannot be Empty!!");
+                    } else if (!password1.equals(password2)) {
+                        passwordsDontMatch.setText("Passwords do not match!");
+                    } else {
+                        db.register(username, password1);
+                        setUpScreen setUpScreen = new setUpScreen(); // redirect to account setup
+                        setUpScreen.start(primaryStage);
+                    }
+                } else {
+                    // Handle regular login logic for existing users
+                }
+            } catch (SQLException ex) {
+            	passwordsDontMatch.setText("Database error: " + ex.getMessage());
+                ex.printStackTrace();
             }
         });
         /***************************************************************/
