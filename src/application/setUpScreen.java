@@ -1,5 +1,7 @@
 package application;
 
+import java.sql.SQLException;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
@@ -66,18 +68,42 @@ public class setUpScreen {
         TextField prefNameTextfield = new TextField();
         setupGrid.add(prefNameTextfield, 1, 4);
         
-<<<<<<< HEAD
-        
-=======
->>>>>>> b6de8c1 (beccas first commit)
         // Create a simple home screen with a logout button
         Button nextBtn = new Button("Done");
         nextBtn.setStyle("-fx-background-color: lightblue; -fx-font-weight: bold;");
 
         // Set action for logout button to return to the login screen
         nextBtn.setOnAction(e -> {
-            LoginPage loginPage = new LoginPage();
-            loginPage.start(primaryStage);
+        	String email = emailTextfield.getText();
+            String firstName = firstNameTextfield.getText();
+            String middleName = middleNameTextfield.getText();
+            String lastName = lastNameTextfield.getText();
+            String prefName = prefNameTextfield.getText();
+
+            DatabaseHelper db = new DatabaseHelper();
+            try {
+                db.connectToDatabase();
+                // Assuming the current user email was stored somewhere
+                if (!db.doesUserExist(email)) {
+                    // Save the user’s profile information in the database (extend your schema for names)
+                    db.updateUserProfile(email, firstName, middleName, lastName, prefName);
+                    System.out.println("User profile for: " + email);
+                } else {
+                	System.out.println("User does not exist");
+                }
+
+                LoginPage loginPage = new LoginPage();
+                loginPage.start(primaryStage); // redirect back to login
+                db.printAllUsers();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+            	try {
+                    db.closeConnection(); // Ensure connection is closed after operations
+                } catch (Exception ex) {
+                    System.err.println("Error closing connection: " + ex.getMessage());
+                }
+            }
         });
         
         VBox layout = new VBox(10);
