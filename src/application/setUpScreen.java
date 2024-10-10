@@ -46,6 +46,7 @@ public class setUpScreen {
         Label preferredNameLabel = new Label("Preferred Name:");
         TextField preferredNameInput = new TextField();
         preferredNameLabel.setStyle(LoginPage.h3bold);
+        preferredNameInput.setPromptText("Optional");
         grid.add(preferredNameLabel, 0, 3);
         grid.add(preferredNameInput, 1, 3);
 

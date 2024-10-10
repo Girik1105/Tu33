@@ -9,6 +9,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -131,11 +132,11 @@ public class Dashboard {
         // Button to reset a user's account.
         Button resetButton = new Button("Reset A User's Account");
         resetButton.setOnAction(e -> {
-            // Generate a one-time password and expiration time.
-            String oneTimePassword = "temporaryPassword123";
-            String expirationTime = "2024-12-31 23:59"; // Placeholder expiration date
+            // Generate a one-time password and expiration time
+            String oneTimePassword = "tempPass123";
+            String expirationTime = "10/30/24 13:50";
             
-            // Display the one-time password and its expiration time.
+            // Display the one-time password and its expiration time
             textarea.setText("One-time Password: " + oneTimePassword + "\nExpiration: " + expirationTime);
         });
         /*************************************************************************/
@@ -144,19 +145,30 @@ public class Dashboard {
         // Button to delete a user's account.
         Button deleteButton = new Button("Delete a User's Account");
         deleteButton.setOnAction(e -> {
-            // Create an alert to confirm the deletion.
+            // Create an alert to confirm the deletion
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Delete Confirmation");
             alert.setHeaderText("Are you sure?");
             alert.setContentText("Type 'Yes' to confirm.");
             
-            // Create a confirmation button.
-            Button yesButton = new Button("Yes");
-            yesButton.setOnAction(event -> {
-                // Logic to delete the user (placeholder).
-                textarea.setText("User deleted successfully.");
+            // input field where user types 'Yes'
+            TextField inputField = new TextField();
+            inputField.setPromptText("Type 'Yes' to delete user");
+            
+            // add input field to HBox
+            HBox content = new HBox(10);
+            content.getChildren().add(inputField);
+            
+            alert.getDialogPane().setContent(content);
+
+            // Show alert and enter text to delete user
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK && inputField.getText().equals("Yes")) {
+                    textarea.setText("User deleted successfully.");
+                } else {
+                    textarea.setText("User was not deleted");
+                }
             });
-            alert.showAndWait();
         });
         /*************************************************************************/
         
