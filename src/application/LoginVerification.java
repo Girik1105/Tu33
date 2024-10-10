@@ -11,15 +11,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+/**
+ * Description: LoginVerification class is responsible for displaying
+ * the login verification screen, in which the user has to type their
+ * account username and password, then re-type their password again to
+ * ensure it matches.
+ */
+
 public class LoginVerification {
 	private Scene scene;
     private String expectedUsername; // The username from account setup
-    private String expectedPassword; // password form account setup
+    private String expectedPassword; // The password form account setup
     private String preferredName; // preferred name from account setup
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String email;
+    private String firstName; // The first name from account setup
+    private String middleName; // The middle name from account setup
+    private String lastName; // The last name from account setup
+    private String email; // The email from account setup
 
     public LoginVerification(Stage primaryStage, String expectedUsername, String expectedPassword, String preferredName, String firstName, String middleName, String lastName, String email) {
         this.expectedUsername = expectedUsername.trim();
@@ -93,6 +100,7 @@ public class LoginVerification {
         scene = new Scene(grid, 400, 300);
     }
 
+    // Getter method to get the scene
     public Scene getScene() {
         return scene;
     }

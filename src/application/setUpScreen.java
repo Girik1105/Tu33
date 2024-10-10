@@ -25,10 +25,6 @@ public class setUpScreen {
     /**
      * Constructor for setUpScreen.
      * Sets up the user input fields and handles form submission.
-     *
-     * @param primaryStage The main window (stage) of the application
-     * @param username The username passed from the login screen
-     * @param password The password passed from the login screen
      */
     public setUpScreen(Stage primaryStage, String username, String password) {
     	
