@@ -184,16 +184,26 @@ public class Dashboard {
         
         /*** Add or Remove a User's Role *****************************************/
         // Button to add or remove a user's role.
-        Button addRemoveRole = new Button("Add or Remove a User's Role");
-        addRemoveRole.setOnAction(e -> {
-            // Placeholder logic for selecting a user and performing role actions.
-            String selectedUser = "User1";
-            String roleAction = "Add";
+        Button addRole = new Button("Add a Role to User");
+        addRole.setOnAction(e -> {
+            // User and action to be done
+            String selectedUser = "Becca";
+            String roleAction = "Added";
             
             // Display the action.
-            textarea.setText(roleAction + " role to/from " + selectedUser);
+            textarea.setText(roleAction + " role to " + selectedUser);
         });
-        adminAction.getChildren().addAll(inviteButton, resetButton, deleteButton, listButton, addRemoveRole);
+        
+        Button removeRole = new Button("Remove a Role from User");
+        removeRole.setOnAction(e -> {
+        	// User and action to be done
+        	String selectedUser = "Becca";
+        	String roleAction = "Removed";
+        	
+        	// Display the action.
+        	textarea.setText(roleAction + " role from " + selectedUser);
+        });
+        adminAction.getChildren().addAll(inviteButton, resetButton, deleteButton, listButton, addRole, removeRole);
         
         /*** Logout Functionality ************************************************/
         // VBox for logout area.
