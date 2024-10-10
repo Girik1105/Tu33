@@ -1,5 +1,5 @@
 package application;
-	
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,15 +20,15 @@ import javafx.stage.Stage;
  */
 
 public class LoginPage extends Application {
-	
-	public static String blueBackground = "-fx-background-color: lightblue;";
-	public static String baseBackground = "-fx-background-color: floralwhite;";
-	public static String h1 = "-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4b5d75;";
-	public static String h2 = "-fx-font-size: 16px;";
-	public static String h3bold = "-fx-font-size: 14px; -fx-font-weight: bold";
-	public static String errorText = "-fx-text-fill: red";
-	public static String buttonStyle = "-fx-background-color: lightblue; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #4b5d75;";
-	public static String buttonStyle2 = "-fx-background-color: lightblue; -fx-font-size: 14px; -fx-text-fill: #4b5d75;";
+    
+    // Styling properties for the UI elements
+    public static String blueBackground = "-fx-background-color: lightblue;"; // Blue background for title section
+    public static String baseBackground = "-fx-background-color: floralwhite;"; // Default background for the rest of the layout
+    public static String h1 = "-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4b5d75;";  // Large title text
+    public static String h2 = "-fx-font-size: 16px;"; // Smaller subtitle text
+    public static String h3bold = "-fx-font-size: 14px; -fx-font-weight: bold"; // Label text
+    public static String errorText = "-fx-text-fill: red"; // Error message style (red text)
+    public static String buttonStyle = "-fx-background-color: lightblue; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #4b5d75;"; // Button styling
 
 	@Override
     public void start(Stage primaryStage) {
