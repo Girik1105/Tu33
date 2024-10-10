@@ -43,6 +43,7 @@ public class setUpScreen {
         // First Name Label and Input Field
         Label firstNameLabel = new Label("First Name:");
         firstNameLabel.setStyle(LoginPage.h3bold); // Apply custom styling for label
+
         TextField firstNameInput = new TextField(); // Text field for input
         grid.add(firstNameLabel, 0, 0); // Add label to grid (column 0, row 0)
         grid.add(firstNameInput, 1, 0); // Add text field to grid (column 1, row 0)
@@ -65,6 +66,9 @@ public class setUpScreen {
         Label preferredNameLabel = new Label("Preferred Name:");
         preferredNameLabel.setStyle(LoginPage.h3bold); // Apply custom styling for label
         TextField preferredNameInput = new TextField(); // Text field for input
+
+        preferredNameInput.setPromptText("Optional");
+
         grid.add(preferredNameLabel, 0, 3); // Add label to grid (column 0, row 3)
         grid.add(preferredNameInput, 1, 3); // Add text field to grid (column 1, row 3)
 
@@ -87,8 +91,8 @@ public class setUpScreen {
             String preferredName = preferredNameInput.getText().trim(); // Get preferred name
             String email = emailInput.getText().trim(); // Get email input
 
-            // Validate if any fields are empty, show error if true
-            if (firstName.isEmpty() || middleName.isEmpty() || lastName.isEmpty() || email.isEmpty()) {
+
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()) {
                 Label errorMessage = new Label("Please fill out all empty fields"); // Error message
                 errorMessage.setStyle(LoginPage.errorText); // Apply error text style
                 grid.add(errorMessage, 1, 7); // Add error message to grid
@@ -100,6 +104,7 @@ public class setUpScreen {
             }
         });
         grid.add(submitButton, 1, 6); // Add the submit button to the grid (column 1, row 6)
+
 
         // Create the scene and set the size
         scene = new Scene(grid, 400, 300);

@@ -37,12 +37,15 @@ public class ProfessorDashboard {
         layout.setPadding(new Insets(20)); // Set padding for spacing.
 
         // VBox for displaying user information.
-        VBox userInfo = new VBox(10); // 10px spacing between user details.
+        VBox userInfo = new VBox(10);
         Label firstNameDashboard = new Label("First Name: " + firstName);
+        firstNameDashboard.setStyle(LoginPage.h2);
         Label middleNameDashboard = new Label("Middle Name: " + middleName);
+        middleNameDashboard.setStyle(LoginPage.h2);
         Label lastNameDashboard = new Label("Last Name: " + lastName);
+        lastNameDashboard.setStyle(LoginPage.h2);
         Label emailDashboard = new Label("Email: " + email);
-        // Add all user information labels to the userInfo VBox.
+        emailDashboard.setStyle(LoginPage.h2);
         userInfo.getChildren().addAll(firstNameDashboard, middleNameDashboard, lastNameDashboard, emailDashboard);
 
         // VBox for the logout button.
