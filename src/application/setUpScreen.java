@@ -25,20 +25,24 @@ public class setUpScreen {
     /**
      * Constructor for setUpScreen.
      * Sets up the user input fields and handles form submission.
+     *
+     * @param primaryStage The main window (stage) of the application
+     * @param username The username passed from the login screen
+     * @param password The password passed from the login screen
      */
     public setUpScreen(Stage primaryStage, String username, String password) {
     	
         // Create a GridPane layout for arranging input fields in a grid-like structure
         GridPane grid = new GridPane();
         grid.setStyle(LoginPage.baseBackground); // Set background style
-        grid.setAlignment(Pos.CENTER);           // Center the grid in the window
-        grid.setPadding(new Insets(10, 10, 10, 10));  // Padding around the grid
-        grid.setVgap(8);   // Vertical gap between rows
-        grid.setHgap(10);  // Horizontal gap between columns
+        grid.setAlignment(Pos.CENTER); // Center the grid in the window
+        grid.setPadding(new Insets(10, 10, 10, 10)); // Padding around the grid
+        grid.setVgap(8); // Vertical gap between rows
+        grid.setHgap(10); // Horizontal gap between columns
 
         // First Name Label and Input Field
         Label firstNameLabel = new Label("First Name:");
-        firstNameLabel.setStyle(LoginPage.h3bold);  // Apply custom styling for label
+        firstNameLabel.setStyle(LoginPage.h3bold); // Apply custom styling for label
         TextField firstNameInput = new TextField(); // Text field for input
         grid.add(firstNameLabel, 0, 0); // Add label to grid (column 0, row 0)
         grid.add(firstNameInput, 1, 0); // Add text field to grid (column 1, row 0)
@@ -95,7 +99,7 @@ public class setUpScreen {
                 primaryStage.setTitle("Verify Login"); // Set the window title for verification
             }
         });
-        grid.add(submitButton, 1, 6);  // Add the submit button to the grid (column 1, row 6)
+        grid.add(submitButton, 1, 6); // Add the submit button to the grid (column 1, row 6)
 
         // Create the scene and set the size
         scene = new Scene(grid, 400, 300);

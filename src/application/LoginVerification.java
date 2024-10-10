@@ -100,7 +100,9 @@ public class LoginVerification {
         scene = new Scene(grid, 400, 300);
     }
 
-    // Getter method to get the scene
+    /**
+     * Getter method to retrieve the Scene object.
+     */
     public Scene getScene() {
         return scene;
     }
