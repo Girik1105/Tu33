@@ -9,11 +9,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class setUpScreen {
-    private Scene scene;
-    private String firstName, middleName, lastName, email, preferredName;
+public class StudentSetupScreen {
+	private Scene scene;
+    private String preferredName, firstName, middleName, lastName, email;
 
-    public setUpScreen(Stage primaryStage, String username, String password) {
+    public StudentSetupScreen(Stage primaryStage, String username) {
     	GridPane grid = new GridPane();
         grid.setStyle(LoginPage.baseBackground);
         grid.setAlignment(Pos.CENTER); // align items in grid to centera
@@ -60,19 +60,19 @@ public class setUpScreen {
         Button submitButton = new Button("Finish Setup");
         submitButton.setOnAction(e -> {
         	firstName = firstNameInput.getText().trim();
-            String middleName = middleNameInput.getText().trim();
-            String lastName = lastNameInput.getText().trim();
-            String preferredName = preferredNameInput.getText().trim();
-            String email = emailInput.getText().trim();
+            middleName = middleNameInput.getText().trim();
+            lastName = lastNameInput.getText().trim();
+            preferredName = preferredNameInput.getText().trim();
+            email = emailInput.getText().trim();
             
-            if(firstName.isEmpty() || firstName == null || middleName.isEmpty() || middleName == null || lastName.isEmpty() || lastName == null || email.isEmpty() || email == null){
+            if(firstName.isEmpty() || firstName == null || lastName.isEmpty() || lastName == null || email.isEmpty() || email == null){
             	Label errorMessage = new Label("Please fill out all empty fields");
             	errorMessage.setStyle(LoginPage.errorText);
             	grid.add(errorMessage, 1, 7);
             } else {  
-            LoginVerification loginVerification = new LoginVerification(primaryStage, username, password, preferredName, firstName, middleName, lastName, email);
-            primaryStage.setScene(loginVerification.getScene());
-            primaryStage.setTitle("Verify Login");
+            StudentDashboard studentDashboard = new StudentDashboard(primaryStage, preferredName, firstName, middleName, lastName, email);
+            primaryStage.setScene(studentDashboard.getScene());
+            primaryStage.setTitle(firstName + "'s Dashboard");
             
             }
         });
