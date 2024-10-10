@@ -1,6 +1,7 @@
 package application;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -51,6 +52,7 @@ public class Dashboard {
         
         // VBox for displaying the welcome title.
         VBox title = new VBox(10);
+        title.setStyle(LoginPage.blueBackground);
         
         // Determine the display name using the preferred name if provided.
         String displayFirstName;
@@ -62,23 +64,32 @@ public class Dashboard {
         
         // Create a welcome label and set its style.
         Label welcomeLabel = new Label("Welcome, " + displayFirstName + "!");
-        welcomeLabel.setStyle(LoginPage.h3bold);
+        welcomeLabel.setStyle(LoginPage.h1);
         title.getChildren().add(welcomeLabel);
         
         // VBox for displaying user information.
         VBox userInfo = new VBox(10);
         Label firstNameDashboard = new Label("First Name: " + firstName);
+        firstNameDashboard.setStyle(LoginPage.h2);
         Label middleNameDashboard = new Label("Middle Name: " + middleName);
+        middleNameDashboard.setStyle(LoginPage.h2);
         Label lastNameDashboard = new Label("Last Name: " + lastName);
+        lastNameDashboard.setStyle(LoginPage.h2);
         Label emailDashboard = new Label("Email: " + email);
+        emailDashboard.setStyle(LoginPage.h2);
         userInfo.getChildren().addAll(firstNameDashboard, middleNameDashboard, lastNameDashboard, emailDashboard);
         
         // FlowPane for admin actions (buttons).
         FlowPane adminAction = new FlowPane();
+        adminAction.setPadding(new Insets(10, 10, 10, 10));
+        adminAction.setAlignment(Pos.CENTER);
+        adminAction.setHgap(10);
+        adminAction.setVgap(10);
         
         /*** Invite a User *****************************************************/
         // Button to invite a user.
         Button inviteButton = new Button("Invite A User");
+        inviteButton.setStyle(LoginPage.buttonStyle2);
         inviteButton.setOnAction(e -> {
             // Create an alert for role selection.
             Alert roleAlert = new Alert(AlertType.INFORMATION);
@@ -131,6 +142,7 @@ public class Dashboard {
         /*** Reset a User's Account **********************************************/
         // Button to reset a user's account.
         Button resetButton = new Button("Reset A User's Account");
+        resetButton.setStyle(LoginPage.buttonStyle2);
         resetButton.setOnAction(e -> {
             // Generate a one-time password and expiration time
             String oneTimePassword = "tempPass123";
@@ -144,6 +156,7 @@ public class Dashboard {
         /*** Delete a User's Account *********************************************/
         // Button to delete a user's account.
         Button deleteButton = new Button("Delete a User's Account");
+        deleteButton.setStyle(LoginPage.buttonStyle2);
         deleteButton.setOnAction(e -> {
             // Create an alert to confirm the deletion
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -175,6 +188,7 @@ public class Dashboard {
         /*** List All Users ******************************************************/
         // Button to list all users.
         Button listButton = new Button("List All Users");
+        listButton.setStyle(LoginPage.buttonStyle2);
         listButton.setOnAction(e -> {
             // Placeholder user list.
             String usersList = "User1: Nghi\nUser2: Girik\nUser3: Becca";
@@ -185,6 +199,7 @@ public class Dashboard {
         /*** Add or Remove a User's Role *****************************************/
         // Button to add or remove a user's role.
         Button addRole = new Button("Add a Role to User");
+        addRole.setStyle(LoginPage.buttonStyle2);
         addRole.setOnAction(e -> {
             // User and action to be done
             String selectedUser = "Becca";
@@ -195,6 +210,7 @@ public class Dashboard {
         });
         
         Button removeRole = new Button("Remove a Role from User");
+        removeRole.setStyle(LoginPage.buttonStyle2);
         removeRole.setOnAction(e -> {
         	// User and action to be done
         	String selectedUser = "Becca";
@@ -209,6 +225,7 @@ public class Dashboard {
         // VBox for logout area.
         VBox logoutArea = new VBox(10);
         Button logoutButton = new Button("Logout");
+        logoutButton.setStyle(LoginPage.buttonStyle);
         
         // Set the action for the logout button.
         logoutButton.setOnAction(e -> {
@@ -216,12 +233,14 @@ public class Dashboard {
             loginPage.start(primaryStage); // Return to the login page.
         });
         logoutArea.getChildren().add(logoutButton);
+        logoutArea.setAlignment(Pos.CENTER);
         
         // Add all components to the layout.
         layout.getChildren().addAll(title, userInfo, adminAction, textarea, logoutArea);
+        layout.setStyle(LoginPage.baseBackground);
         
         // Create and set the scene.
-        scene = new Scene(layout, 400, 350);
+        scene = new Scene(layout, 400, 450);
     }
 
     /**
