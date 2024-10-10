@@ -53,14 +53,17 @@ public class LoginPage extends Application {
         passwordLabel.setStyle(h3bold);
         grid.add(passwordLabel, 0,1);
         grid.add(passwordField, 1,1);
+        
+        Button invitationSubmit = new Button("Enter Invitation Code");
+        invitationSubmit.setStyle(buttonStyle);
+        grid.add(invitationSubmit, 1,4);
+        invitationSubmit.setOnAction(e -> {
+        	OtherUser OtherUser = new OtherUser(primaryStage); 
+        	primaryStage.setScene(OtherUser.getScene());
+            primaryStage.setTitle("Log in with Code");
+        });
 
-        Label invitationLabel = new Label("Invitation Code:");
-        TextField invitationField = new TextField();
-        invitationLabel.setStyle(h3bold);
-        grid.add(invitationLabel, 0,2);
-        grid.add(invitationField, 1,2);
-
-        Button loginButton = new Button("Login");
+        Button loginButton = new Button("Create Account");
         loginButton.setOnAction(e -> {
         	String username = usernameField.getText();
         	String password = passwordField.getText();
@@ -74,7 +77,7 @@ public class LoginPage extends Application {
         		System.out.println("Invalid credentials!");
         		 Label errorMessage = new Label("Username/Password or Code Incorrect");
         		 errorMessage.setStyle(errorText);
-        		 grid.add(errorMessage, 1, 4);
+        		 grid.add(errorMessage, 1, 5);
         	}
         });
         loginButton.setStyle(buttonStyle);
