@@ -12,7 +12,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 /**
  * The LoginPage class handles the login screen of the application,
  * where users can log in or proceed with an invitation code.
