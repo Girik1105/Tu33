@@ -17,7 +17,6 @@ import javafx.stage.Stage;
  * where users can log in or proceed with an invitation code.
  * The class validates user credentials and transitions to the next screen.
  */
-
 public class LoginPage extends Application {
     
     // Styling properties for the UI elements
@@ -29,7 +28,7 @@ public class LoginPage extends Application {
     public static String errorText = "-fx-text-fill: red"; // Error message style (red text)
     public static String buttonStyle = "-fx-background-color: lightblue; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #4b5d75;"; // Button styling
 
-	@Override
+    @Override
     public void start(Stage primaryStage) {
         // VBox for the application title and description
         VBox title = new VBox(); // Create a VBox to hold the title and description

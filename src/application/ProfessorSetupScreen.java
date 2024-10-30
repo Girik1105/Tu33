@@ -9,26 +9,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-/****
- * The ProfessorSetupScreen class creates a setup interface for a professor.
- * 
- * This screen allows users to input their personal information, including first name, 
- * middle name, last name, preferred name, and email address. The user can submit 
- * the data to proceed to the ProfessorDashboard screen.
-****/
-
 public class ProfessorSetupScreen {
 	private Scene scene;
     private String preferredName, firstName, middleName, lastName, email;
-    
-    /****
-    * Constructor initializes the setup screen for professor information input.
-    * It sets up a grid to gather the professor's details like name and email,
-    * and provides a submission button to proceed to the next screen.
-    * 
-    * @param primaryStage The primary stage for displaying the scene.
-    * @param username The user name of the logged-in professor (not currently used).
-    ****/
 
     public ProfessorSetupScreen(Stage primaryStage, String username) {
     	GridPane grid = new GridPane();
@@ -82,13 +65,11 @@ public class ProfessorSetupScreen {
             preferredName = preferredNameInput.getText().trim();
             email = emailInput.getText().trim();
             
-            // Check if required fields are filled, otherwise show an error message
             if(firstName.isEmpty() || firstName == null || lastName.isEmpty() || lastName == null || email.isEmpty() || email == null){
             	Label errorMessage = new Label("Please fill out all empty fields");
             	errorMessage.setStyle(LoginPage.errorText);
             	grid.add(errorMessage, 1, 7);
-            } else {
-            // Proceed to ProfessorDashboard if validation is successful
+            } else {  
             ProfessorDashboard professorDashboard = new ProfessorDashboard(primaryStage, preferredName, firstName, middleName, lastName, email);
             primaryStage.setScene(professorDashboard.getScene());
             primaryStage.setTitle(firstName + "'s Dashboard");
@@ -100,12 +81,6 @@ public class ProfessorSetupScreen {
 
         scene = new Scene(grid, 400, 300);
     }
-    
-    /*****
-     * This method returns the current scene for the setup screen.
-     * 
-     * @return The Scene object containing the layout of the professor setup screen.
-     ****/
 
     public Scene getScene() {
         return scene;

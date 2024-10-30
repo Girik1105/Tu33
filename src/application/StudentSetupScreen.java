@@ -9,30 +9,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-/*****
- * The StudentSetupScreen class creates the setup interface for students to enter their personal information.
- * 
- * The screen gathers the student's first name, middle name, last name, preferred name, and email address. 
- * Once the setup is complete, it redirects the user to their student dashboard.
- ****/
-
 public class StudentSetupScreen {
 	private Scene scene;
     private String preferredName, firstName, middleName, lastName, email;
-    
-    /******
-     * Constructor for StudentSetupScreen.
-     * 
-     * It builds the user interface for student information setup and handles form submission.
-     * 
-     * @param primaryStage The primary stage where the scene is displayed.
-     * @param username The username of the student (not currently used in the setup screen).
-     ****/
 
     public StudentSetupScreen(Stage primaryStage, String username) {
     	GridPane grid = new GridPane();
         grid.setStyle(LoginPage.baseBackground);
-        grid.setAlignment(Pos.CENTER); // align items in grid to center
+        grid.setAlignment(Pos.CENTER); // align items in grid to centera
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
@@ -74,12 +58,6 @@ public class StudentSetupScreen {
 
         // Submit Button
         Button submitButton = new Button("Finish Setup");
-        /****
-         * Handles form submission when the "Finish Setup" button is clicked.
-         * 
-         * It checks whether all the fields are filled in, and if so, it creates a new StudentDashboard.
-         * Otherwise, it displays an error message asking the user to complete the missing fields.
-         ****/
         submitButton.setOnAction(e -> {
         	firstName = firstNameInput.getText().trim();
             middleName = middleNameInput.getText().trim();
