@@ -1,4 +1,4 @@
-package simpleDatabase;
+package application;
 
 import java.io.Serializable;
 

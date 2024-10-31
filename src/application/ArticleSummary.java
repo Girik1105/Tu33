@@ -1,4 +1,4 @@
-package simpleDatabase;
+package application;
 
 /**
  * ArticleSummary class represents a summary of an article for listing purposes.

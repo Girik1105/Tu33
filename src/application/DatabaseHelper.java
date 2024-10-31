@@ -1,4 +1,4 @@
-package simpleDatabase;
+package application;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -447,4 +447,14 @@ public class DatabaseHelper {
             }
         }
     }
+    public boolean isAdminSetupComplete() throws SQLException {
+        String query = "SELECT COUNT(*) FROM cse360users WHERE role = 'admin'";
+        try (ResultSet resultSet = statement.executeQuery(query)) {
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
 }

@@ -1,4 +1,4 @@
-package simpleDatabase;
+package application;
 
 /**
  * Article class represents a help article with various fields stored as char arrays.
