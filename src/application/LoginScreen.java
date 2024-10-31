@@ -41,13 +41,13 @@ public class LoginScreen extends VBox {
         loginLabel.setStyle(StartCSE360.h2); // Style for the login page label
 
         TextField emailField = new TextField();
-        emailField.setPromptText("Enter Email");
+        emailField.setPromptText("Enter Email / Username");
 
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Enter Password");
 
         TextField roleField = new TextField();
-        roleField.setPromptText("Enter Role");
+        roleField.setPromptText("Enter Verification Code");
 
         Button loginButton = new Button("Login");
         loginButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);

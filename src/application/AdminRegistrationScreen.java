@@ -44,6 +44,7 @@ public class AdminRegistrationScreen extends VBox {
             		
             		databaseHelper.createArticle(defaultArticle);
             		System.out.println("Default article created successfully.");
+            		System.out.println("Your verification code is admin");
             		
             		// Create default backup to restore default article if it gets deleted
             		databaseHelper.backupArticles("default");

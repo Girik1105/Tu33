@@ -31,6 +31,7 @@ public class InstructorRegistrationScreen extends VBox {
             		// Register admin in database
             		databaseHelper.register(email, password, "instructor");
             		System.out.println("User setup completed.");
+            		System.out.println("Your verification code is instructor.");
             		databaseHelper.displayUsersByAdmin(); //debug
                 
                 new StartCSE360().showLoginScreen(stage, databaseHelper);
