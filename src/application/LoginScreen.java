@@ -15,6 +15,7 @@ public class LoginScreen extends VBox {
     private DatabaseHelper databaseHelper;
     private Stage primaryStage;
 
+    // Constructor initializes the login screen UI
     public LoginScreen(Stage stage, DatabaseHelper databaseHelper) {
         this.primaryStage = stage;
         this.databaseHelper = databaseHelper;
@@ -37,9 +38,11 @@ public class LoginScreen extends VBox {
         formBox.setAlignment(Pos.CENTER);
         formBox.setPadding(new Insets(20));
 
+        // Label for login prompt
         Label loginLabel = new Label("Login");
-        loginLabel.setStyle(StartCSE360.h2); // Style for the login page label
+        loginLabel.setStyle(StartCSE360.h2); // Style for login label
 
+        // Fields for email, password, and role input
         TextField emailField = new TextField();
         emailField.setPromptText("Enter Email");
 
@@ -49,6 +52,7 @@ public class LoginScreen extends VBox {
         TextField roleField = new TextField();
         roleField.setPromptText("Enter Role");
 
+        // Login button to attempt login
         Button loginButton = new Button("Login");
         loginButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
         loginButton.setOnAction(e -> {
@@ -57,19 +61,21 @@ public class LoginScreen extends VBox {
             String role = roleField.getText();
 
             try {
+                // Check credentials for admin or user role
                 if (databaseHelper.login(email, password, "admin")) {
                     System.out.println("Login successful. Welcome, " + role + " " + email + "!");
-                    showDashboard();
+                    showDashboard(); // Show dashboard for admin
                 } else if (databaseHelper.login(email, password, "user")) {
                     System.out.println("Login successful. Welcome, " + role + " " + email + "!");
                 } else {
                     System.out.println("Invalid user credentials. Try again!");
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                ex.printStackTrace(); // Print any errors to console
             }
         });
 
+        // Register button to navigate to Instructor Registration screen
         Button registerButton = new Button("Register");
         registerButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
         registerButton.setOnAction(e -> {
@@ -84,6 +90,7 @@ public class LoginScreen extends VBox {
         getChildren().addAll(titleBox, formBox);
     }
 
+    // Method to display the dashboard screen
     private void showDashboard() {
         Dashboard dashboardScreen = new Dashboard(primaryStage, databaseHelper);
         primaryStage.setScene(new Scene(dashboardScreen, 500, 400));

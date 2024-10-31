@@ -12,13 +12,14 @@ import application.Article;
 
 public class CreateArticleScreen extends GridPane {
 
+    // Constructor initializes the article creation screen UI
     public CreateArticleScreen(Stage stage, DatabaseHelper databaseHelper) {
-        setPadding(new Insets(20));
-        setHgap(10);
-        setVgap(10);
-        setAlignment(Pos.CENTER);
+        setPadding(new Insets(20)); // Set padding around grid
+        setHgap(10); // Horizontal gap between grid elements
+        setVgap(10); // Vertical gap between grid elements
+        setAlignment(Pos.CENTER); // Center-align grid contents
 
-        // Labels and TextFields for Article details
+        // Labels and input fields for Article details
         Label titleLabel = new Label("Title:");
         TextField titleField = new TextField();
 
@@ -37,11 +38,11 @@ public class CreateArticleScreen extends GridPane {
         Label referencesLabel = new Label("References:");
         TextField referencesField = new TextField();
 
-        // Save button
+        // Save button to create and save the article
         Button saveButton = new Button("Save");
         saveButton.setOnAction(e -> {
             try {
-                // Create a new Article object with field data
+                // Create a new Article object with entered details
                 Article article = new Article();
                 article.setTitle(titleField.getText().toCharArray());
                 article.setAuthors(authorsField.getText().toCharArray());
@@ -50,11 +51,11 @@ public class CreateArticleScreen extends GridPane {
                 article.setBody(bodyField.getText().toCharArray());
                 article.setReferences(referencesField.getText().toCharArray());
 
-                // Save to database
+                // Save article to the database
                 databaseHelper.createArticle(article);
                 System.out.println("Article created successfully.");
 
-                // Clear fields after saving
+                // Clear input fields after saving
                 titleField.clear();
                 authorsField.clear();
                 abstractField.clear();
@@ -62,17 +63,18 @@ public class CreateArticleScreen extends GridPane {
                 bodyField.clear();
                 referencesField.clear();
 
-                // Return to dashboard
+                // Navigate back to Dashboard
                 stage.setScene(new Scene(new Dashboard(stage, databaseHelper), 500, 400));
             } catch (Exception ex) {
-                ex.printStackTrace();
+                ex.printStackTrace(); // Print any errors to console
             }
         });
         
+        // Button to go back to the Dashboard
         Button backButton = new Button("Back to Dashboard");
         backButton.setOnAction(e -> stage.setScene(new Scene(new Dashboard(stage, databaseHelper), 500, 400)));
 
-        // Add components to grid
+        // Add components to grid layout
         add(titleLabel, 0, 0);
         add(titleField, 1, 0);
         add(authorsLabel, 0, 1);
@@ -88,6 +90,6 @@ public class CreateArticleScreen extends GridPane {
         add(saveButton, 1, 6);
         add(backButton, 1, 7);
 
-        setStyle("-fx-background-color: floralwhite;");
+        setStyle("-fx-background-color: floralwhite;"); // Set background color
     }
 }
