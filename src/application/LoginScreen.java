@@ -73,7 +73,7 @@ public class LoginScreen extends VBox {
         Button registerButton = new Button("Register");
         registerButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
         registerButton.setOnAction(e -> {
-            primaryStage.setScene(new Scene(new AdminRegistrationScreen(primaryStage, databaseHelper), 400, 300));
+            primaryStage.setScene(new Scene(new UserRegistrationScreen(primaryStage, databaseHelper), 400, 300));
             primaryStage.show();
         });
 

@@ -186,6 +186,34 @@ public class DatabaseHelper {
 		} 
 	}
 
+	public List<User> listUsers() throws Exception {
+	    List<User> users = new ArrayList<>();
+	    String query = "SELECT * FROM cse360users";
+	    try (Statement stmt = connection.createStatement();
+	         ResultSet rs = stmt.executeQuery(query)) {
+
+	        while (rs.next()) {
+	            int id = rs.getInt("id");
+	            String email = rs.getString("email");
+	            String encryptedPassword = rs.getString("password");
+	            String role = rs.getString("role");
+
+	            // Decrypt password
+	            char[] decryptedPassword = EncryptionUtils.toCharArray(
+	                    encryptionHelper.decrypt(
+	                            Base64.getDecoder().decode(encryptedPassword),
+	                            EncryptionUtils.getInitializationVector(email.toCharArray())
+	                    )
+	            );
+
+	            // Add user to the list
+	            users.add(new User(id, email, decryptedPassword, role));
+	            Arrays.fill(decryptedPassword, '0'); // Clear sensitive data
+	        }
+	    }
+	    return users;
+	}
+
     /**
      * Closes the database connection.
      */

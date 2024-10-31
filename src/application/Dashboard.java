@@ -53,6 +53,7 @@ public class Dashboard extends VBox {
         viewUsersButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
         viewUsersButton.setOnAction(e -> {
             // Code to view users in database
+    	    stage.setScene(new Scene(new ViewUserScreen(stage, databaseHelper), 400, 400));
         });
 
         Button logoutButton = new Button("Logout");
