@@ -85,7 +85,7 @@ public class InstructorRegistrationScreen extends VBox {
         Button backButton = new Button("Back to Dashboard");
         backButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));
         setAlignment(Pos.CENTER); // Center-align content
-        getChildren().addAll(titleLabel, emailField, passwordField, firstName, registerButton, backButton); // Add components to VBox
+        getChildren().addAll(titleLabel, emailField, passwordField, firstName, middleName, lastName, registerButton, backButton); // Add components to VBox
         setSpacing(10); // Set spacing between components
     }
 }
