@@ -28,6 +28,10 @@ public class ViewUserScreen extends VBox {
         Button backButton = new Button("Back to Dashboard");
         backButton.setOnAction(e -> stage.setScene(new Scene(new Dashboard(stage, databaseHelper), 500, 400)));
 
+        // New Edit User button to go to EditUserScreen
+        Button editUserButton = new Button("Edit User");
+        editUserButton.setOnAction(e -> stage.setScene(new Scene(new EditUserScreen(stage, databaseHelper), 500, 500)));
+
         try {
             // Fetch list of users from the database
             List<User> users = databaseHelper.listUsers();
@@ -49,6 +53,7 @@ public class ViewUserScreen extends VBox {
             usersArea.setText("An error occurred while retrieving users.");
         }
 
-        getChildren().addAll(headerLabel, usersArea, backButton); // Add elements to VBox
+        // Add elements to VBox, including the new Edit User button
+        getChildren().addAll(headerLabel, usersArea, editUserButton, backButton);
     }
 }

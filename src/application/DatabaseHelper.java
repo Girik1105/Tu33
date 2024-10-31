@@ -231,6 +231,24 @@ public class DatabaseHelper {
 	    return users;
 	}
 
+    public void updateUser(int id, String email, String password, String role, String firstName, 
+                       String middleName, String lastName, String preferredName) throws SQLException {
+        String updateSQL = "UPDATE cse360users SET email = ?, password = ?, role = ?, " +
+                        "firstName = ?, middleName = ?, lastName = ?, preferredName = ? WHERE id = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(updateSQL)) {
+                pstmt.setString(1, email);
+                pstmt.setString(2, password);  // Consider encrypting password as needed
+                pstmt.setString(3, role);
+                pstmt.setString(4, firstName);
+                pstmt.setString(5, middleName);
+                pstmt.setString(6, lastName);
+                pstmt.setString(7, preferredName);
+                pstmt.setInt(8, id);
+                pstmt.executeUpdate();
+            }
+}
+
+
     /**
      * Closes the database connection.
      */
