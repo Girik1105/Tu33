@@ -44,13 +44,13 @@ public class LoginScreen extends VBox {
 
         // Fields for email, password, and role input
         TextField emailField = new TextField();
-        emailField.setPromptText("Enter Email");
+        emailField.setPromptText("Enter Email / Username");
 
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Enter Password");
 
         TextField roleField = new TextField();
-        roleField.setPromptText("Enter Role");
+        roleField.setPromptText("Enter Verification Code");
 
         // Login button to attempt login
         Button loginButton = new Button("Login");
