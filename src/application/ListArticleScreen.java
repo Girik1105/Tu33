@@ -25,20 +25,26 @@ public class ListArticleScreen extends VBox {
         backButton.setOnAction(e -> stage.setScene(new Scene(new Dashboard(stage, databaseHelper), 500, 400)));
 
         try {
-            List<ArticleSummary> articles = databaseHelper.listArticles();
+            List<Article> articles = databaseHelper.listArticles();
             if (articles.isEmpty()) {
                 articlesArea.setText("No articles found.");
             } else {
                 StringBuilder articleText = new StringBuilder();
-                for (ArticleSummary summary : articles) {
-                    articleText.append("ID: ").append(summary.getId())
-                               .append(", Title: ").append(summary.getTitle())
-                               .append(", Authors: ").append(summary.getAuthors()).append("\n");
+                for (Article article : articles) {
+                    articleText.append("ID: ").append(article.getId()).append("\n")
+                            .append("Title: ").append(article.getTitle()).append("\n")
+                            .append("Authors: ").append(article.getAuthors()).append("\n")
+                            .append("Abstract: ").append(article.getAbstractText()).append("\n")
+                            .append("Keywords: ").append(article.getKeywords()).append("\n")
+                            .append("Body: ").append(article.getBody()).append("\n")
+                            .append("References: ").append(article.getReferences()).append("\n")
+                            .append("----------------------------------------\n");
                 }
                 articlesArea.setText(articleText.toString());
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            articlesArea.setText("An error occurred while retrieving articles.");
         }
 
         getChildren().addAll(headerLabel, articlesArea, backButton);

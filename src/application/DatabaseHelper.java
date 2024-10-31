@@ -212,9 +212,9 @@ public class DatabaseHelper {
     public void createArticle(Article article) throws Exception {
         String insertArticle = "INSERT INTO articles (title, authors, abstract, keywords, body, references) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(insertArticle)) {
-            // Encrypt each field and encode as Base64 strings
             byte[] iv = EncryptionUtils.getArticleInitializationVector();
 
+            // Encrypt each field and encode as Base64 strings
             String encryptedTitle = Base64.getEncoder().encodeToString(
                     encryptionHelper.encrypt(EncryptionUtils.toByteArray(article.getTitle()), iv)
             );
@@ -244,7 +244,7 @@ public class DatabaseHelper {
             pstmt.executeUpdate();
         }
     }
-
+    
     /**
      * Deletes an article by ID.
      *
@@ -259,47 +259,54 @@ public class DatabaseHelper {
     }
 
     /**
-     * Retrieves a list of article summaries for listing.
+     * Retrieves a list of articles, including complete details.
      *
-     * @return List of ArticleSummary objects.
+     * @return List of Article objects with decrypted fields.
      */
-    public List<ArticleSummary> listArticles() throws Exception {
-        List<ArticleSummary> articles = new ArrayList<>();
-        String query = "SELECT id, title, authors FROM articles";
+    public List<Article> listArticles() throws Exception {
+        List<Article> articles = new ArrayList<>();
+        String query = "SELECT * FROM articles";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
+
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String encryptedTitle = rs.getString("title");
                 String encryptedAuthors = rs.getString("authors");
+                String encryptedAbstract = rs.getString("abstract");
+                String encryptedKeywords = rs.getString("keywords");
+                String encryptedBody = rs.getString("body");
+                String encryptedReferences = rs.getString("references");
 
                 byte[] iv = EncryptionUtils.getArticleInitializationVector();
 
-                char[] titleChars = EncryptionUtils.toCharArray(
-                        encryptionHelper.decrypt(
-                                Base64.getDecoder().decode(encryptedTitle),
-                                iv
-                        )
-                );
-                char[] authorsChars = EncryptionUtils.toCharArray(
-                        encryptionHelper.decrypt(
-                                Base64.getDecoder().decode(encryptedAuthors),
-                                iv
-                        )
-                );
+                char[] title = EncryptionUtils.toCharArray(encryptionHelper.decrypt(Base64.getDecoder().decode(encryptedTitle), iv));
+                char[] authors = EncryptionUtils.toCharArray(encryptionHelper.decrypt(Base64.getDecoder().decode(encryptedAuthors), iv));
+                char[] abstractText = EncryptionUtils.toCharArray(encryptionHelper.decrypt(Base64.getDecoder().decode(encryptedAbstract), iv));
+                char[] keywords = EncryptionUtils.toCharArray(encryptionHelper.decrypt(Base64.getDecoder().decode(encryptedKeywords), iv));
+                char[] body = EncryptionUtils.toCharArray(encryptionHelper.decrypt(Base64.getDecoder().decode(encryptedBody), iv));
+                char[] references = EncryptionUtils.toCharArray(encryptionHelper.decrypt(Base64.getDecoder().decode(encryptedReferences), iv));
 
-                String title = new String(titleChars);
-                String authors = new String(authorsChars);
+                // Create the article object and add to list
+                Article article = new Article();
+                article.setId(id);
+                article.setTitle(title);
+                article.setAuthors(authors);
+                article.setAbstractText(abstractText);
+                article.setKeywords(keywords);
+                article.setBody(body);
+                article.setReferences(references);
 
-                articles.add(new ArticleSummary(id, title, authors));
+                articles.add(article);
 
                 // Clear sensitive data
-                java.util.Arrays.fill(titleChars, ' ');
-                java.util.Arrays.fill(authorsChars, ' ');
+                //java.util.Arrays.fill(title, ' ');
+                //java.util.Arrays.fill(authors, ' ');
             }
         }
         return articles;
     }
+
 
     /**
      * Retrieves an article by ID with decrypted fields.
