@@ -1,10 +1,18 @@
 package application;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class StartCSE360 extends Application {
+	// UI Styling Properties for buttons
     public static String blueBackground = "-fx-background-color: lightblue;";
     public static String baseBackground = "-fx-background-color: floralwhite;";
     public static String h1 = "-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4b5d75;";
@@ -17,6 +25,17 @@ public class StartCSE360 extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+    	
+        // VBox for the application title and description
+        VBox title = new VBox(); // Create a VBox to hold the title and description
+        title.setPadding(new Insets(10)); // Set padding for the title section
+        title.setAlignment(Pos.CENTER); // Center the title within the window
+        title.setStyle(blueBackground); // Apply blue background style
+        
+        // Create the main title label
+        Label label = new Label("Welcome to BookedIn"); // Set the application title
+        label.setStyle(h1); // Apply title text styling
+        
         databaseHelper = new DatabaseHelper();
         databaseHelper.connectToDatabase();
 

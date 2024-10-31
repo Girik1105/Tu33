@@ -18,6 +18,7 @@ public class AdminRegistrationScreen extends VBox {
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Enter Admin Password");
         
+        setStyle("-fx-background-color: floralwhite;");
 
         Button registerButton = new Button("Register");
 
@@ -40,6 +41,9 @@ public class AdminRegistrationScreen extends VBox {
                 defaultArticle.setKeywords("Non-Fiction".toCharArray());
                 defaultArticle.setBody("Press the number according to the option in the list, then press enter to confirm action.".toCharArray());
                 defaultArticle.setReferences("N/A".toCharArray());
+                
+                // Create default backup to restore default article if it gets deleted
+                databaseHelper.backupArticles("default");
                 
                 databaseHelper.createArticle(defaultArticle);
                 System.out.println("Default article created successfully.");
