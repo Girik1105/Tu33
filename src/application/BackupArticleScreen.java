@@ -32,6 +32,9 @@ public class BackupArticleScreen extends VBox {
             }
         });
 
-        getChildren().addAll(promptLabel, filenameField, backupButton);
+        Button backButton = new Button("Back to Dashboard");
+        backButton.setOnAction(e -> stage.setScene(new Scene(new Dashboard(stage, databaseHelper), 500, 400)));
+
+        getChildren().addAll(promptLabel, filenameField, backupButton, backButton);
     }
 }

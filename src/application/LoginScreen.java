@@ -57,9 +57,11 @@ public class LoginScreen extends VBox {
             String role = roleField.getText();
 
             try {
-                if (databaseHelper.login(email, password, role)) {
-                    System.out.println("Login successful. Welcome, " + email + "!");
+                if (databaseHelper.login(email, password, "admin")) {
+                    System.out.println("Login successful. Welcome, " + role + " " + email + "!");
                     showDashboard();
+                } else if (databaseHelper.login(email, password, "user")) {
+                    System.out.println("Login successful. Welcome, " + role + " " + email + "!");
                 } else {
                     System.out.println("Invalid user credentials. Try again!");
                 }

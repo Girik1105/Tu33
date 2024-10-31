@@ -31,7 +31,10 @@ public class RestoreArticleScreen extends VBox {
                 ex.printStackTrace();
             }
         });
+        
+        Button backButton = new Button("Back to Dashboard");
+        backButton.setOnAction(e -> stage.setScene(new Scene(new Dashboard(stage, databaseHelper), 500, 400)));
 
-        getChildren().addAll(promptLabel, filenameField, restoreButton);
+        getChildren().addAll(promptLabel, filenameField, restoreButton, backButton);
     }
 }
