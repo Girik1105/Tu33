@@ -9,10 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class UserRegistrationScreen extends VBox {
+public class InstructorRegistrationScreen extends VBox {
 
-    public UserRegistrationScreen(Stage stage, DatabaseHelper databaseHelper) {
-        Label titleLabel = new Label("User Registration");
+    public InstructorRegistrationScreen(Stage stage, DatabaseHelper databaseHelper) {
+        Label titleLabel = new Label("Instructor Registration");
         TextField emailField = new TextField();
         emailField.setPromptText("Enter User Email");
         PasswordField passwordField = new PasswordField();
@@ -29,7 +29,7 @@ public class UserRegistrationScreen extends VBox {
             	// Check if user already exists in the database
             	if(!databaseHelper.doesUserExist(email)) {
             		// Register admin in database
-            		databaseHelper.register(email, password, "user");
+            		databaseHelper.register(email, password, "instructor");
             		System.out.println("User setup completed.");
             		databaseHelper.displayUsersByAdmin(); //debug
                 

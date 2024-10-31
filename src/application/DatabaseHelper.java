@@ -49,6 +49,23 @@ public class DatabaseHelper {
             System.err.println("JDBC Driver not found: " + e.getMessage());
         }
     }
+    /**
+     * Connects to an in-memory H2 database for testing purposes and creates necessary tables.
+     * This method is used during testing to avoid modifying the actual database on disk.
+     * The in-memory database exists only while the application is running.
+     */
+    public void connectToInMemoryDatabase() throws SQLException {
+        try {
+            Class.forName(JDBC_DRIVER); // Load the JDBC driver
+            System.out.println("Connecting to in-memory database...");
+            // Use an in-memory database URL
+            connection = DriverManager.getConnection("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", USER, PASS);
+            statement = connection.createStatement();
+            createTables(); // Create the necessary tables if they don't exist
+        } catch (ClassNotFoundException e) {
+            System.err.println("JDBC Driver not found: " + e.getMessage());
+        }
+    }
 
     /**
      * Creates the users and articles tables if they do not exist.
@@ -285,7 +302,15 @@ public class DatabaseHelper {
             pstmt.executeUpdate();
         }
     }
-
+    /**
+    
+    Deletes all articles from the database.*/
+    public void deleteAllArticles() throws SQLException {
+        String deleteSQL = "DELETE FROM articles";
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(deleteSQL);
+        }
+    }
     /**
      * Retrieves a list of articles, including complete details.
      *
