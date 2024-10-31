@@ -17,7 +17,7 @@ public class InstructorRegistrationScreen extends VBox {
 
         // Email input field
         TextField emailField = new TextField();
-        emailField.setPromptText("Enter User Email");
+        emailField.setPromptText("Enter User Email / Username");
 
         // Password input field
         PasswordField passwordField = new PasswordField();
@@ -38,7 +38,7 @@ public class InstructorRegistrationScreen extends VBox {
         // Last Name input field
         TextField preferredName = new TextField();
         preferredName.setPromptText("Enter preferred name (Optional)");
-                
+
         setStyle("-fx-background-color: floralwhite;"); // Set background color
 
         // Register button to submit registration details
@@ -48,6 +48,7 @@ public class InstructorRegistrationScreen extends VBox {
             String email = emailField.getText();
             String password = passwordField.getText();
             try {
+
                 // Check if the user already exists in the database
                 if(!databaseHelper.doesUserExist(email)) {
                     // Register instructor in the database
@@ -61,15 +62,32 @@ public class InstructorRegistrationScreen extends VBox {
                     System.out.println("User already exists."); // Display if user exists
                 }
 
+            	// Check if user already exists in the database
+            	if(!databaseHelper.doesUserExist(email)) {
+            		// Register admin in database
+            		databaseHelper.register(email, password, "instructor");
+            		System.out.println("User setup completed.");
+            		System.out.println("Your verification code is instructor.");
+            		databaseHelper.displayUsersByAdmin(); //debug
+                
+                new StartCSE360().showLoginScreen(stage, databaseHelper);
+                
+            	} else {
+            		System.out.println("User already exists.");
+            	}
+
+
             } catch (Exception ex) {
                 ex.printStackTrace(); // Print any errors to console
             }
         });
+
         Button backButton = new Button("Back to Dashboard");
         backButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));
         
         setAlignment(Pos.CENTER); // Center-align content
         getChildren().addAll(titleLabel, emailField, passwordField, firstName, middleName, lastName, registerButton, backButton); // Add components to VBox
+
         setSpacing(10); // Set spacing between components
     }
 }
