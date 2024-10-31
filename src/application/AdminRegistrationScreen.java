@@ -34,7 +34,6 @@ public class AdminRegistrationScreen extends VBox {
         TextField preferredName = new TextField();
         preferredName.setPromptText("Enter preferred name (Optional)");
         
-        
         setStyle("-fx-background-color: floralwhite;");
 
         Button registerButton = new Button("Register");
