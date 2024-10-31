@@ -231,6 +231,7 @@ public class DatabaseHelper {
 	    return users;
 	}
 
+
     public void updateUser(int id, String email, String password, String role, String firstName, 
                        String middleName, String lastName, String preferredName) throws SQLException {
         String updateSQL = "UPDATE cse360users SET email = ?, password = ?, role = ?, " +
@@ -247,6 +248,25 @@ public class DatabaseHelper {
                 pstmt.executeUpdate();
             }
 }
+
+    // Method to check if a user exists in the database by their ID
+    public boolean doesUserExistById(int id) throws SQLException {
+        String query = "SELECT COUNT(*) FROM cse360users WHERE id = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                pstmt.setInt(1, id);
+                ResultSet rs = pstmt.executeQuery();
+                return rs.next() && rs.getInt(1) > 0;
+            }
+    }
+
+    // Method to remove a user from the database by their ID
+    public void removeUserById(int id) throws SQLException {
+        String deleteSQL = "DELETE FROM cse360users WHERE id = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(deleteSQL)) {
+                pstmt.setInt(1, id);
+                pstmt.executeUpdate();
+            }
+    }
 
 
     /**

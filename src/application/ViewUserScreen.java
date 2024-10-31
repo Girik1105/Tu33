@@ -32,6 +32,22 @@ public class ViewUserScreen extends VBox {
         Button editUserButton = new Button("Edit User");
         editUserButton.setOnAction(e -> stage.setScene(new Scene(new EditUserScreen(stage, databaseHelper), 500, 500)));
 
+        // New Remove User button to go to RemoveUserScreen
+        Button removeUserButton = new Button("Remove User");
+        removeUserButton.setOnAction(e -> stage.setScene(new Scene(new RemoveUserScreen(stage, databaseHelper), 500, 400)));
+
+        // Invite User button 
+        Button inviteUserButton = new Button("Invite User");
+
+        // Reset a User button
+        Button resetUser = new Button("Reset User");
+
+        // Add a Role to User button
+        Button addRole = new Button("Add Role from User");
+
+        // Remove a Role to User button
+        Button removeRole = new Button("Remove Role from User");
+
         try {
             // Fetch list of users from the database
             List<User> users = databaseHelper.listUsers();
@@ -53,7 +69,8 @@ public class ViewUserScreen extends VBox {
             usersArea.setText("An error occurred while retrieving users.");
         }
 
-        // Add elements to VBox, including the new Edit User button
-        getChildren().addAll(headerLabel, usersArea, editUserButton, backButton);
+        // Add elements to VBox, including the new Edit and Remove User button
+        getChildren().addAll(headerLabel, usersArea, editUserButton, removeUserButton,inviteUserButton,resetUser,addRole, removeRole, backButton);
+
     }
 }

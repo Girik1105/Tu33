@@ -18,6 +18,23 @@ public class AdminRegistrationScreen extends VBox {
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Enter Admin Password");
         
+        // First Name input field
+        TextField firstName = new TextField();
+        firstName.setPromptText("Enter first name");
+
+        // Middle Name input field
+        TextField middleName = new TextField();
+        middleName.setPromptText("Enter middle name (Optional)");
+
+        // Last Name input field
+        TextField lastName = new TextField();
+        lastName.setPromptText("Enter last name");
+
+        // Last Name input field
+        TextField preferredName = new TextField();
+        preferredName.setPromptText("Enter preferred name (Optional)");
+        
+        
         setStyle("-fx-background-color: floralwhite;");
 
         Button registerButton = new Button("Register");
@@ -59,9 +76,10 @@ public class AdminRegistrationScreen extends VBox {
                 ex.printStackTrace();
             }
         });
-
+        Button backButton = new Button("Back to Dashboard");
+        backButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));
         setAlignment(Pos.CENTER);
-        getChildren().addAll(titleLabel, emailField, passwordField, registerButton);
+        getChildren().addAll(titleLabel, emailField, passwordField, firstName, middleName, lastName, registerButton, backButton); // Add components to VBox
         setSpacing(10);
     }
 }
