@@ -129,6 +129,14 @@ public class DatabaseHelper {
             FOREIGN KEY (user_id) REFERENCES cse360users(id)
         );
 
+        CREATE TABLE student_search_requests (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            student_id INT,
+            query TEXT,
+            type ENUM('generic', 'specific'),
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (student_id) REFERENCES cse360users(id)
+        );
     }
 
     /**
@@ -712,5 +720,9 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
             pstmt.executeUpdate();
         }
     }
+
+    public Connection getConnection() {
+        return this.connection;
+    } 
 
 }
