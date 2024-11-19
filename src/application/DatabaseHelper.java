@@ -87,6 +87,8 @@ public class DatabaseHelper {
                 + "body TEXT, "
                 + "references TEXT)";
         statement.execute(articlesTable);
+
+        
     }
 
     /**
@@ -553,6 +555,58 @@ public class DatabaseHelper {
             }
         }
         return false;
+    }
+
+/**
+ * Checks if removing admin rights would leave no admin in the system.
+ *
+ * @return True if at least one admin exists, false otherwise.
+ */
+public boolean hasOtherAdmins() throws SQLException {
+    String query = "SELECT COUNT(*) FROM cse360users WHERE role = 'admin'";
+    try (Statement stmt = connection.createStatement();
+         ResultSet rs = stmt.executeQuery(query)) {
+        if (rs.next()) {
+            return rs.getInt(1) > 1; // At least one other admin
+        }
+    }
+    return false;
+}
+
+    /**
+    * Updates the role of a user but ensures admin removal rules are not violated.
+    *
+    * @param userId    The ID of the user whose role is being updated.
+    * @param newRole   The new role to assign.
+    * @throws Exception If admin removal rules are violated.
+    */
+    public void updateUserRole(int userId, String newRole) throws Exception {
+        // Check if the user being updated is an admin
+        String query = "SELECT role FROM cse360users WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String currentRole = rs.getString("role");
+                    if ("admin".equals(currentRole) && !"admin".equals(newRole)) {
+                        // Validate if there are other admins before demoting this user
+                        if (!hasOtherAdmins()) {
+                            throw new IllegalStateException("Cannot remove admin rights. At least one admin is required.");
+                        }
+                    }
+                } else {
+                    throw new IllegalArgumentException("User ID not found.");
+                }
+            }
+        }
+
+        // Update the user's role
+        String updateSQL = "UPDATE cse360users SET role = ? WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(updateSQL)) {
+            pstmt.setString(1, newRole);
+            pstmt.setInt(2, userId);
+            pstmt.executeUpdate();
+        }
     }
 
 }
