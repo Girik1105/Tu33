@@ -137,6 +137,32 @@ public class DatabaseHelper {
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (student_id) REFERENCES cse360users(id)
         );
+
+        CREATE TABLE general_groups (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            description TEXT
+        );
+
+        CREATE TABLE article_groups (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            article_id INT,
+            group_id INT,
+            group_type ENUM('general', 'special'),
+            FOREIGN KEY (article_id) REFERENCES articles(id),
+            FOREIGN KEY (group_id) REFERENCES general_groups(id)
+        );
+
+
+        CREATE TABLE student_groups (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            student_id INT,
+            group_id INT,
+            group_type ENUM('general', 'special'),
+            FOREIGN KEY (student_id) REFERENCES cse360users(id),
+            FOREIGN KEY (group_id) REFERENCES general_groups(id)
+        );
+
     }
 
     /**
