@@ -88,7 +88,47 @@ public class DatabaseHelper {
                 + "references TEXT)";
         statement.execute(articlesTable);
 
-        
+        CREATE TABLE special_access_groups (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            description TEXT
+        );
+
+        CREATE TABLE special_access_articles (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            group_id INT,
+            title VARCHAR(255),
+            body TEXT, -- Encrypted body
+            FOREIGN KEY (group_id) REFERENCES special_access_groups(id)
+        );
+
+        CREATE TABLE special_access_group_admins (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            group_id INT,
+            user_id INT,
+            FOREIGN KEY (group_id) REFERENCES special_access_groups(id),
+            FOREIGN KEY (user_id) REFERENCES cse360users(id)
+        );
+
+        CREATE TABLE special_access_group_instructors (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            group_id INT,
+            user_id INT,
+            can_view_body BOOLEAN DEFAULT FALSE,
+            is_admin BOOLEAN DEFAULT FALSE,
+            FOREIGN KEY (group_id) REFERENCES special_access_groups(id),
+            FOREIGN KEY (user_id) REFERENCES cse360users(id)
+        );
+
+        CREATE TABLE special_access_group_students (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            group_id INT,
+            user_id INT,
+            can_view_body BOOLEAN DEFAULT FALSE,
+            FOREIGN KEY (group_id) REFERENCES special_access_groups(id),
+            FOREIGN KEY (user_id) REFERENCES cse360users(id)
+        );
+
     }
 
     /**
@@ -605,6 +645,70 @@ public boolean hasOtherAdmins() throws SQLException {
         try (PreparedStatement pstmt = connection.prepareStatement(updateSQL)) {
             pstmt.setString(1, newRole);
             pstmt.setInt(2, userId);
+            pstmt.executeUpdate();
+        }
+    }
+
+    /**
+ * Adds a new special access group.
+ */
+public void addSpecialAccessGroup(String name, String description) throws SQLException {
+    String query = "INSERT INTO special_access_groups (name, description) VALUES (?, ?)";
+    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+        pstmt.setString(1, name);
+        pstmt.setString(2, description);
+        pstmt.executeUpdate();
+    }
+}
+
+/**
+ * Adds an admin to a special access group.
+ */
+public void addGroupAdmin(int groupId, int userId) throws SQLException {
+    String query = "INSERT INTO special_access_group_admins (group_id, user_id) VALUES (?, ?)";
+    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+        pstmt.setInt(1, groupId);
+        pstmt.setInt(2, userId);
+        pstmt.executeUpdate();
+    }
+}
+
+    /**
+    * Adds an instructor to a special access group.
+    * The first instructor is given admin and view rights.
+    */
+    public void addGroupInstructor(int groupId, int userId) throws SQLException {
+        boolean isFirstInstructor = false;
+
+        // Check if this is the first instructor
+        String checkQuery = "SELECT COUNT(*) FROM special_access_group_instructors WHERE group_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(checkQuery)) {
+            pstmt.setInt(1, groupId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next() && rs.getInt(1) == 0) {
+                isFirstInstructor = true;
+            }
+        }
+
+        String insertQuery = "INSERT INTO special_access_group_instructors (group_id, user_id, can_view_body, is_admin) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(insertQuery)) {
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, userId);
+            pstmt.setBoolean(3, isFirstInstructor); // Grant view rights
+            pstmt.setBoolean(4, isFirstInstructor); // Grant admin rights
+            pstmt.executeUpdate();
+        }
+    }
+
+    /**
+    * Adds a student to a special access group.
+    */
+    public void addGroupStudent(int groupId, int userId, boolean canViewBody) throws SQLException {
+        String query = "INSERT INTO special_access_group_students (group_id, user_id, can_view_body) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, userId);
+            pstmt.setBoolean(3, canViewBody);
             pstmt.executeUpdate();
         }
     }
