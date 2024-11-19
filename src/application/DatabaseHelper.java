@@ -163,6 +163,14 @@ public class DatabaseHelper {
             FOREIGN KEY (group_id) REFERENCES general_groups(id)
         );
 
+        CREATE TABLE admin_group_rights (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            admin_id INT,
+            group_id INT,
+            group_type ENUM('general', 'special'),
+            FOREIGN KEY (admin_id) REFERENCES cse360users(id),
+            FOREIGN KEY (group_id) REFERENCES general_groups(id)
+        );
     }
 
     /**
