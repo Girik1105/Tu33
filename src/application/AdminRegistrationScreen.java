@@ -26,7 +26,7 @@ public class AdminRegistrationScreen extends VBox {
 
         // Middle Name input field
         TextField middleNameField = new TextField();
-        middleNameField.setPromptText("Enter middle name (Optional)");
+        middleNameField.setPromptText("Enter middle name (Optional - Enter N/A if unavailable)");
 
         // Last Name input field
         TextField lastNameField = new TextField();
@@ -34,7 +34,7 @@ public class AdminRegistrationScreen extends VBox {
 
         // Last Name input field
         TextField preferredNameField = new TextField();
-        preferredNameField.setPromptText("Enter preferred name (Optional)");
+        preferredNameField.setPromptText("Enter preferred name (Optional - Enter N/A if unavailable)");
         
         setStyle("-fx-background-color: floralwhite;");
 

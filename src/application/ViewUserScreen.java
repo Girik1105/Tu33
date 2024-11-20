@@ -74,7 +74,7 @@ public class ViewUserScreen extends VBox {
         }
 
         // Add elements to VBox, including the new Edit and Remove User button
-        getChildren().addAll(headerLabel, usersArea, editUserButton, removeUserButton,inviteUserButton,resetUser,addRole, removeRole, backButton);
+        getChildren().addAll(headerLabel, usersArea, editUserButton, removeUserButton, inviteUserButton, resetUser, addRole, removeRole, backButton);
 
     }
 }

@@ -1,5 +1,6 @@
 package application;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,7 +14,18 @@ public class InstructorRegistrationScreen extends VBox {
 
     // Constructor initializes the instructor registration screen UI
     public InstructorRegistrationScreen(Stage stage, DatabaseHelper databaseHelper) {
-        Label titleLabel = new Label("Instructor Registration");
+        VBox title = new VBox(); // Container for title section
+        title.setPadding(new Insets(10)); // Set padding for title section
+        title.setAlignment(Pos.CENTER); // Center-align title
+        title.setStyle(StartCSE360.blueBackground); // Apply blue background style
+        
+        // Create the main title label
+        Label titleLabel = new Label("Registration"); // Application title
+        titleLabel.setStyle(StartCSE360.h1); // Apply title text styling
+        
+        // Last Name input field -- WIP
+        TextField verificationCodeField = new TextField();
+        verificationCodeField.setPromptText("Enter verification code");
 
         // Email input field
         TextField emailField = new TextField();
@@ -29,7 +41,7 @@ public class InstructorRegistrationScreen extends VBox {
 
         // Middle Name input field
         TextField middleNameField = new TextField();
-        middleNameField.setPromptText("Enter middle name (Optional)");
+        middleNameField.setPromptText("Enter middle name (Optional - Enter N/A if unavailable)");
 
         // Last Name input field
         TextField lastNameField = new TextField();
@@ -37,7 +49,7 @@ public class InstructorRegistrationScreen extends VBox {
 
         // Last Name input field
         TextField preferredNameField = new TextField();
-        preferredNameField.setPromptText("Enter preferred name (Optional)");
+        preferredNameField.setPromptText("Enter preferred name (Optional - Enter N/A if unavailable)");
 
         setStyle("-fx-background-color: floralwhite;"); // Set background color
 
@@ -45,6 +57,7 @@ public class InstructorRegistrationScreen extends VBox {
         Button registerButton = new Button("Register");
 
         registerButton.setOnAction(e -> {
+        	String verificationCode = verificationCodeField.getText();
             String email = emailField.getText();
             String password = passwordField.getText();
             String firstName = firstNameField.getText();
@@ -90,7 +103,7 @@ public class InstructorRegistrationScreen extends VBox {
         backButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));
         
         setAlignment(Pos.CENTER); // Center-align content
-        getChildren().addAll(titleLabel, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton, backButton); // Add components to VBox
+        getChildren().addAll(titleLabel, verificationCodeField, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton, backButton); // Add components to VBox
 
         setSpacing(10); // Set spacing between components
     }
