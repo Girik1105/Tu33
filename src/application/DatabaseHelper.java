@@ -75,7 +75,11 @@ public class DatabaseHelper {
                 + "id INT AUTO_INCREMENT PRIMARY KEY, "
                 + "email VARCHAR(255) UNIQUE, "
                 + "password VARCHAR(255), "
-                + "role VARCHAR(20))";
+                + "role VARCHAR(20), "
+                + "firstName VARCHAR(255), "
+                + "middleName VARCHAR(255), "
+                + "lastName VARCHAR(255), "
+                + "preferredName VARCHAR(255))";
         statement.execute(userTable);
 
      // Articles Table
@@ -202,17 +206,25 @@ public class DatabaseHelper {
      * @param email    User email.
      * @param password User password.
      * @param role     User role.
+     * @param firstName User first name.
+     * @param middleName User middle name.
+     * @param lastName User last name.
+     * @param preferredName User preferred name.
      */
-    public void register(String email, String password, String role) throws Exception {
+    public void register(String email, String password, String role, String firstName, String middleName, String lastName, String preferredName) throws Exception {
         String encryptedPassword = Base64.getEncoder().encodeToString(
                 encryptionHelper.encrypt(password.getBytes(), EncryptionUtils.getInitializationVector(email.toCharArray()))
         );
 
-        String insertUser = "INSERT INTO cse360users (email, password, role) VALUES (?, ?, ?)";
+        String insertUser = "INSERT INTO cse360users (email, password, role, firstName, middleName, lastName, preferredName) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(insertUser)) {
             pstmt.setString(1, email);
             pstmt.setString(2, encryptedPassword);
             pstmt.setString(3, role);
+            pstmt.setString(4, firstName);  // Ensure the variable names match column names
+            pstmt.setString(5, middleName);
+            pstmt.setString(6, lastName);
+            pstmt.setString(7, preferredName);
             pstmt.executeUpdate();
         }
     }
@@ -307,6 +319,10 @@ public class DatabaseHelper {
 	            String email = rs.getString("email");
 	            String encryptedPassword = rs.getString("password");
 	            String role = rs.getString("role");
+	            String firstName = rs.getString("firstName");
+	            String middleName = rs.getString("middleName");
+	            String lastName = rs.getString("lastName");
+	            String preferredName = rs.getString("preferredName");
 
 	            // Decrypt password
 	            char[] decryptedPassword = EncryptionUtils.toCharArray(
@@ -317,7 +333,7 @@ public class DatabaseHelper {
 	            );
 
 	            // Add user to the list
-	            users.add(new User(id, email, decryptedPassword, role));
+	            users.add(new User(id, email, decryptedPassword, role, firstName, middleName, lastName, preferredName));
 	            Arrays.fill(decryptedPassword, '0'); // Clear sensitive data
 	        }
 	    }

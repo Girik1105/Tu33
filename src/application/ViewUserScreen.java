@@ -60,6 +60,10 @@ public class ViewUserScreen extends VBox {
                     userText.append("ID: ").append(user.getId()).append("\n")
                             .append("Email: ").append(user.getEmail()).append("\n")
                             .append("Role: ").append(user.getRole()).append("\n")
+                            .append("First Name: ").append(user.getFirstName()).append("\n")
+                            .append("Middle Name: ").append(user.getMiddleName()).append("\n")
+                            .append("Last Name: ").append(user.getLastName()).append("\n")
+                            .append("Preferred Name: ").append(user.getPreferredName()).append("\n")
                             .append("----------------------------------------\n");
                 }
                 usersArea.setText(userText.toString());

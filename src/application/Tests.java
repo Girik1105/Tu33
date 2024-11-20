@@ -46,9 +46,13 @@ public class Tests {
         String email = "testuser@example.com";
         String password = "TestPassword123";
         String role = "user";
-
+        String firstName = "John";
+        String middleName = "Apple";
+        String lastName = "Smith";
+        String preferredName = "Johny";
+        
         // Register user
-        databaseHelper.register(email, password, role);
+        databaseHelper.register(email, password, role, firstName, middleName, lastName, preferredName);
 
         // Attempt to register the same user again
         boolean userExists = databaseHelper.doesUserExist(email);

@@ -24,20 +24,20 @@ public class InstructorRegistrationScreen extends VBox {
         passwordField.setPromptText("Enter User Password");
         
         // First Name input field
-        TextField firstName = new TextField();
-        firstName.setPromptText("Enter first name");
+        TextField firstNameField = new TextField();
+        firstNameField.setPromptText("Enter first name");
 
         // Middle Name input field
-        TextField middleName = new TextField();
-        middleName.setPromptText("Enter middle name (Optional)");
+        TextField middleNameField = new TextField();
+        middleNameField.setPromptText("Enter middle name (Optional)");
 
         // Last Name input field
-        TextField lastName = new TextField();
-        lastName.setPromptText("Enter last name");
+        TextField lastNameField = new TextField();
+        lastNameField.setPromptText("Enter last name");
 
         // Last Name input field
-        TextField preferredName = new TextField();
-        preferredName.setPromptText("Enter preferred name (Optional)");
+        TextField preferredNameField = new TextField();
+        preferredNameField.setPromptText("Enter preferred name (Optional)");
 
         setStyle("-fx-background-color: floralwhite;"); // Set background color
 
@@ -47,12 +47,16 @@ public class InstructorRegistrationScreen extends VBox {
         registerButton.setOnAction(e -> {
             String email = emailField.getText();
             String password = passwordField.getText();
+            String firstName = firstNameField.getText();
+            String middleName = middleNameField.getText();
+            String lastName = lastNameField.getText();
+            String preferredName = preferredNameField.getText();
             try {
 
                 // Check if the user already exists in the database
                 if(!databaseHelper.doesUserExist(email)) {
                     // Register instructor in the database
-                    databaseHelper.register(email, password, "instructor");
+                    databaseHelper.register(email, password, "instructor", firstName, middleName, lastName, preferredName);
                     System.out.println("User setup completed.");
                     databaseHelper.displayUsersByAdmin(); // For debugging purposes
 
@@ -65,7 +69,7 @@ public class InstructorRegistrationScreen extends VBox {
             	// Check if user already exists in the database
             	if(!databaseHelper.doesUserExist(email)) {
             		// Register admin in database
-            		databaseHelper.register(email, password, "instructor");
+            		databaseHelper.register(email, password, "instructor", firstName, middleName, lastName, preferredName);
             		System.out.println("User setup completed.");
             		System.out.println("Your verification code is instructor.");
             		databaseHelper.displayUsersByAdmin(); //debug
@@ -86,7 +90,7 @@ public class InstructorRegistrationScreen extends VBox {
         backButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));
         
         setAlignment(Pos.CENTER); // Center-align content
-        getChildren().addAll(titleLabel, emailField, passwordField, firstName, middleName, lastName, preferredName, registerButton, backButton); // Add components to VBox
+        getChildren().addAll(titleLabel, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton, backButton); // Add components to VBox
 
         setSpacing(10); // Set spacing between components
     }
