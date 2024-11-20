@@ -768,14 +768,58 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
         return this.connection;
     }
 
-	public void updateArticle(int articleId, Article updatedArticle) {
-		// TODO Auto-generated method stub
-		
-	}
+    /**
+    * Updates an article in the database.
+    *
+    * @param articleId       The ID of the article to update.
+    * @param updatedArticle  The updated article object with new values.
+    * @throws Exception      If an error occurs during the update.
+    */
+    public void updateArticle(int articleId, Article updatedArticle) throws Exception {
+        String updateQuery = "UPDATE articles SET title = ?, authors = ?, abstract = ?, keywords = ?, body = ?, references = ? WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(updateQuery)) {
+            byte[] iv = EncryptionUtils.getArticleInitializationVector();
 
-	public int getLastInsertedId(String string) {
-		// TODO Auto-generated method stub
-		return 0;
-	} 
+            // Encrypt fields and set parameters
+            pstmt.setString(1, Base64.getEncoder().encodeToString(
+                    encryptionHelper.encrypt(EncryptionUtils.toByteArray(updatedArticle.getTitle()), iv)));
+            pstmt.setString(2, Base64.getEncoder().encodeToString(
+                    encryptionHelper.encrypt(EncryptionUtils.toByteArray(updatedArticle.getAuthors()), iv)));
+            pstmt.setString(3, Base64.getEncoder().encodeToString(
+                    encryptionHelper.encrypt(EncryptionUtils.toByteArray(updatedArticle.getAbstractText()), iv)));
+            pstmt.setString(4, Base64.getEncoder().encodeToString(
+                    encryptionHelper.encrypt(EncryptionUtils.toByteArray(updatedArticle.getKeywords()), iv)));
+            pstmt.setString(5, Base64.getEncoder().encodeToString(
+                    encryptionHelper.encrypt(EncryptionUtils.toByteArray(updatedArticle.getBody()), iv)));
+            pstmt.setString(6, Base64.getEncoder().encodeToString(
+                    encryptionHelper.encrypt(EncryptionUtils.toByteArray(updatedArticle.getReferences()), iv)));
+
+            // Set the ID of the article to update
+            pstmt.setInt(7, articleId);
+
+            // Execute the update
+            pstmt.executeUpdate();
+        }
+    }
+
+
+    /**
+    * Retrieves the last inserted ID for a specific table.
+    *
+    * @param tableName The name of the table to query.
+    * @return          The last inserted ID for the table, or 0 if no records exist.
+    * @throws SQLException If an error occurs during the query.
+    */
+    public int getLastInsertedId(String tableName) throws SQLException {
+        String query = "SELECT MAX(id) AS last_id FROM " + tableName;
+        try (Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getInt("last_id");
+            }
+        }
+        return 0; // Return 0 if no records exist
+    }
+
 
 }
