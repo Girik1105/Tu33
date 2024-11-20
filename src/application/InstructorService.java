@@ -1,6 +1,7 @@
 package application;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InstructorService {
@@ -47,8 +48,8 @@ public class InstructorService {
     }
 
     // Create Article
-    public void createArticle(Article article) throws SQLException {
-        databaseHelper.createArticle(article);
+    public void createArticle(Article article) throws Exception {
+        databaseHelper.createArticle(article); //apparently not SQL
     }
 
     // Edit Article

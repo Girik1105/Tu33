@@ -1,5 +1,7 @@
 package application;
 
+import java.sql.SQLException;
+
 public class SpecialAccessGroupService {
     private DatabaseHelper databaseHelper;
 

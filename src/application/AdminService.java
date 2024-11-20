@@ -11,14 +11,14 @@ public class AdminService {
     }
 
     // Create Help Article (no body content)
-    public void createArticleWithoutBody(String title, String authors, String abstractText, String keywords) throws SQLException {
+    public void createArticleWithoutBody(String title, String authors, String abstractText, String keywords) throws Exception {
         Article article = new Article();
         article.setTitle(title.toCharArray());
         article.setAuthors(authors.toCharArray());
         article.setAbstractText(abstractText.toCharArray());
         article.setKeywords(keywords.toCharArray());
         article.setBody("".toCharArray()); // Set empty body as admin can't add/view body
-        databaseHelper.createArticle(article);
+        databaseHelper.createArticle(article); //not SQL
     }
 
     // Delete Help Article

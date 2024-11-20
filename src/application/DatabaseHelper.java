@@ -78,6 +78,7 @@ public class DatabaseHelper {
                 + "role VARCHAR(20))";
         statement.execute(userTable);
 
+     // Articles Table
         String articlesTable = "CREATE TABLE IF NOT EXISTS articles ("
                 + "id INT AUTO_INCREMENT PRIMARY KEY, "
                 + "title TEXT, "
@@ -88,91 +89,99 @@ public class DatabaseHelper {
                 + "references TEXT)";
         statement.execute(articlesTable);
 
-        CREATE TABLE special_access_groups (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            description TEXT
-        );
+        // Special Access Groups Table
+        String specialAccessGroupsTable = "CREATE TABLE IF NOT EXISTS special_access_groups ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "name VARCHAR(255) NOT NULL, "
+                + "description TEXT)";
+        statement.execute(specialAccessGroupsTable);
 
-        CREATE TABLE special_access_articles (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            group_id INT,
-            title VARCHAR(255),
-            body TEXT, -- Encrypted body
-            FOREIGN KEY (group_id) REFERENCES special_access_groups(id)
-        );
+        // Special Access Articles Table
+        String specialAccessArticlesTable = "CREATE TABLE IF NOT EXISTS special_access_articles ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "group_id INT, "
+                + "title VARCHAR(255), "
+                + "body TEXT, "  // Encrypted body
+                + "FOREIGN KEY (group_id) REFERENCES special_access_groups(id))";
+        statement.execute(specialAccessArticlesTable);
 
-        CREATE TABLE special_access_group_admins (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            group_id INT,
-            user_id INT,
-            FOREIGN KEY (group_id) REFERENCES special_access_groups(id),
-            FOREIGN KEY (user_id) REFERENCES cse360users(id)
-        );
+        // Special Access Group Admins Table
+        String specialAccessGroupAdminsTable = "CREATE TABLE IF NOT EXISTS special_access_group_admins ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "group_id INT, "
+                + "user_id INT, "
+                + "FOREIGN KEY (group_id) REFERENCES special_access_groups(id), "
+                + "FOREIGN KEY (user_id) REFERENCES cse360users(id))";
+        statement.execute(specialAccessGroupAdminsTable);
 
-        CREATE TABLE special_access_group_instructors (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            group_id INT,
-            user_id INT,
-            can_view_body BOOLEAN DEFAULT FALSE,
-            is_admin BOOLEAN DEFAULT FALSE,
-            FOREIGN KEY (group_id) REFERENCES special_access_groups(id),
-            FOREIGN KEY (user_id) REFERENCES cse360users(id)
-        );
+        // Special Access Group Instructors Table
+        String specialAccessGroupInstructorsTable = "CREATE TABLE IF NOT EXISTS special_access_group_instructors ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "group_id INT, "
+                + "user_id INT, "
+                + "can_view_body BOOLEAN DEFAULT FALSE, "
+                + "is_admin BOOLEAN DEFAULT FALSE, "
+                + "FOREIGN KEY (group_id) REFERENCES special_access_groups(id), "
+                + "FOREIGN KEY (user_id) REFERENCES cse360users(id))";
+        statement.execute(specialAccessGroupInstructorsTable);
 
-        CREATE TABLE special_access_group_students (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            group_id INT,
-            user_id INT,
-            can_view_body BOOLEAN DEFAULT FALSE,
-            FOREIGN KEY (group_id) REFERENCES special_access_groups(id),
-            FOREIGN KEY (user_id) REFERENCES cse360users(id)
-        );
+        // Special Access Group Students Table
+        String specialAccessGroupStudentsTable = "CREATE TABLE IF NOT EXISTS special_access_group_students ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "group_id INT, "
+                + "user_id INT, "
+                + "can_view_body BOOLEAN DEFAULT FALSE, "
+                + "FOREIGN KEY (group_id) REFERENCES special_access_groups(id), "
+                + "FOREIGN KEY (user_id) REFERENCES cse360users(id))";
+        statement.execute(specialAccessGroupStudentsTable);
 
-        CREATE TABLE student_search_requests (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            student_id INT,
-            query TEXT,
-            type ENUM('generic', 'specific'),
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (student_id) REFERENCES cse360users(id)
-        );
+        // Student Search Requests Table
+        String studentSearchRequestsTable = "CREATE TABLE IF NOT EXISTS student_search_requests ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "student_id INT, "
+                + "query TEXT, "
+                + "type ENUM('generic', 'specific'), "
+                + "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                + "FOREIGN KEY (student_id) REFERENCES cse360users(id))";
+        statement.execute(studentSearchRequestsTable);
 
-        CREATE TABLE general_groups (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            description TEXT
-        );
+        // General Groups Table
+        String generalGroupsTable = "CREATE TABLE IF NOT EXISTS general_groups ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "name VARCHAR(255) NOT NULL, "
+                + "description TEXT)";
+        statement.execute(generalGroupsTable);
 
-        CREATE TABLE article_groups (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            article_id INT,
-            group_id INT,
-            group_type ENUM('general', 'special'),
-            FOREIGN KEY (article_id) REFERENCES articles(id),
-            FOREIGN KEY (group_id) REFERENCES general_groups(id)
-        );
+        // Article Groups Table
+        String articleGroupsTable = "CREATE TABLE IF NOT EXISTS article_groups ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "article_id INT, "
+                + "group_id INT, "
+                + "group_type ENUM('general', 'special'), "
+                + "FOREIGN KEY (article_id) REFERENCES articles(id), "
+                + "FOREIGN KEY (group_id) REFERENCES general_groups(id))";
+        statement.execute(articleGroupsTable);
 
+        // Student Groups Table
+        String studentGroupsTable = "CREATE TABLE IF NOT EXISTS student_groups ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "student_id INT, "
+                + "group_id INT, "
+                + "group_type ENUM('general', 'special'), "
+                + "FOREIGN KEY (student_id) REFERENCES cse360users(id), "
+                + "FOREIGN KEY (group_id) REFERENCES general_groups(id))";
+        statement.execute(studentGroupsTable);
 
-        CREATE TABLE student_groups (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            student_id INT,
-            group_id INT,
-            group_type ENUM('general', 'special'),
-            FOREIGN KEY (student_id) REFERENCES cse360users(id),
-            FOREIGN KEY (group_id) REFERENCES general_groups(id)
-        );
-
-        CREATE TABLE admin_group_rights (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            admin_id INT,
-            group_id INT,
-            group_type ENUM('general', 'special'),
-            FOREIGN KEY (admin_id) REFERENCES cse360users(id),
-            FOREIGN KEY (group_id) REFERENCES general_groups(id)
-        );
+        // Admin Group Rights Table
+        String adminGroupRightsTable = "CREATE TABLE IF NOT EXISTS admin_group_rights ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "admin_id INT, "
+                + "group_id INT, "
+                + "group_type ENUM('general', 'special'), "
+                + "FOREIGN KEY (admin_id) REFERENCES cse360users(id), "
+                + "FOREIGN KEY (group_id) REFERENCES general_groups(id))";
+        statement.execute(adminGroupRightsTable);
     }
-
     /**
      * Checks if the database is empty (no users registered).
      *
@@ -757,6 +766,16 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
 
     public Connection getConnection() {
         return this.connection;
-    } 
+    }
+
+	public void updateArticle(int articleId, Article updatedArticle) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getLastInsertedId(String string) {
+		// TODO Auto-generated method stub
+		return 0;
+	} 
 
 }
