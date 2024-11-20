@@ -32,7 +32,7 @@ public class StudentSetupScreen {
      ****/
     public StudentSetupScreen(Stage primaryStage, String username) {
     	GridPane grid = new GridPane();
-        grid.setStyle(LoginPage.baseBackground); // Apply base background style
+        grid.setStyle(StartCSE360.baseBackground); // Apply base background style
         grid.setAlignment(Pos.CENTER);  // Align the grid's elements to the center
         grid.setPadding(new Insets(10, 10, 10, 10)); // Set padding for the grid
         grid.setVgap(8); // Vertical gap between grid rows
@@ -41,35 +41,35 @@ public class StudentSetupScreen {
         // First name
         Label firstNameLabel = new Label("First Name:");
         TextField firstNameInput = new TextField();
-        firstNameLabel.setStyle(LoginPage.h3bold); // Apply bold style to label
+        firstNameLabel.setStyle(StartCSE360.h3bold); // Apply bold style to label
         grid.add(firstNameLabel, 0, 0); // Add label to grid
         grid.add(firstNameInput, 1, 0); // Add input field to grid
 
         // Middle name
         Label middleNameLabel = new Label("Middle Name:");
         TextField middleNameInput = new TextField();
-        middleNameLabel.setStyle(LoginPage.h3bold); // Apply bold style to label
+        middleNameLabel.setStyle(StartCSE360.h3bold); // Apply bold style to label
         grid.add(middleNameLabel, 0, 1);
         grid.add(middleNameInput, 1, 1);
 
         // Last name
         Label lastNameLabel = new Label("Last Name:");
         TextField lastNameInput = new TextField();
-        lastNameLabel.setStyle(LoginPage.h3bold);
+        lastNameLabel.setStyle(StartCSE360.h3bold);
         grid.add(lastNameLabel, 0, 2);
         grid.add(lastNameInput, 1, 2);
 
         // Preferred name
         Label preferredNameLabel = new Label("Preferred Name:");
         TextField preferredNameInput = new TextField();
-        preferredNameLabel.setStyle(LoginPage.h3bold);
+        preferredNameLabel.setStyle(StartCSE360.h3bold);
         grid.add(preferredNameLabel, 0, 3);
         grid.add(preferredNameInput, 1, 3);
 
         // Email
         Label emailLabel = new Label("Email:");
         TextField emailInput = new TextField();
-        emailLabel.setStyle(LoginPage.h3bold);
+        emailLabel.setStyle(StartCSE360.h3bold);
         grid.add(emailLabel, 0, 4);
         grid.add(emailInput, 1, 4);
 
@@ -94,7 +94,7 @@ public class StudentSetupScreen {
             // Check if required fields are filled
             if(firstName.isEmpty() || firstName == null || lastName.isEmpty() || lastName == null || email.isEmpty() || email == null){
             	Label errorMessage = new Label("Please fill out all empty fields");  // Apply error text style
-            	errorMessage.setStyle(LoginPage.errorText); // Display error message in grid
+            	errorMessage.setStyle(StartCSE360.errorText); // Display error message in grid
             	grid.add(errorMessage, 1, 7);
             } else {  
             	// Redirect to student dashboard if all fields are filled
@@ -104,7 +104,7 @@ public class StudentSetupScreen {
             
             }
         });
-        submitButton.setStyle(LoginPage.buttonStyle); // Apply button style
+        submitButton.setStyle(StartCSE360.buttonStyle); // Apply button style
         grid.add(submitButton, 1, 6); // Add button to grid
         
         // Create and set up the scene

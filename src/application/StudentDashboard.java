@@ -57,11 +57,11 @@ public class StudentDashboard {
 		// Create the logout button and action
 		VBox logoutArea = new VBox(10); // VBox for logout button area with 10px spacing
 		Button logoutButton = new Button("Logout");
-		logoutButton.setStyle(LoginPage.buttonStyle); // Apply button styling
+		logoutButton.setStyle(StartCSE360.buttonStyle); // Apply button styling
 
 		// Logout button action to return to LoginPage
 		logoutButton.setOnAction(e -> {
-			LoginScreen loginScreen = new LoginPage(); // Login page class
+			LoginScreen loginScreen = new LoginScreen(stage, dashboard); // Login page class
 			LoginScreen.start(primaryStage); // Launch LoginPage
 
 		});

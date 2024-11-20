@@ -96,4 +96,9 @@ public class LoginScreen extends VBox {
         primaryStage.setScene(new Scene(dashboardScreen, 500, 400));
         primaryStage.show();
     }
+
+	public static void start(Stage primaryStage2) {
+		// TODO Auto-generated method stub
+		
+	}
 }
