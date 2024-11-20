@@ -802,7 +802,6 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
         }
     }
 
-
     /**
     * Retrieves the last inserted ID for a specific table.
     *

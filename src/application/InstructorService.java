@@ -53,7 +53,7 @@ public class InstructorService {
     }
 
     // Edit Article
-    public void editArticle(int articleId, Article updatedArticle) throws SQLException {
+    public void editArticle(int articleId, Article updatedArticle) throws Exception {
         databaseHelper.updateArticle(articleId, updatedArticle);
     }
 
