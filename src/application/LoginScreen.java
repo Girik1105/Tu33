@@ -68,8 +68,8 @@ public class LoginScreen extends VBox {
                 } else if (databaseHelper.login(email, password, "instructor")) {
                     System.out.println("Login successful. Welcome, " + role + " " + email + "!");
                     showInstructorDashboard(); // Show dashboard for instructor
-                } else if (databaseHelper.login(email, password, role)) {
-                	System.out.println("Login successful!");
+                } else if (databaseHelper.login(email, password, "student")) {
+                	System.out.println("Login successful. Welcome, " + role + " " + email + "!");
                 } else {
                     System.out.println("Invalid user credentials. Try again!");
                 }
@@ -82,7 +82,7 @@ public class LoginScreen extends VBox {
         Button registerButton = new Button("Register");
         registerButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
         registerButton.setOnAction(e -> {
-            primaryStage.setScene(new Scene(new InstructorRegistrationScreen(primaryStage, databaseHelper), 500, 400));
+            primaryStage.setScene(new Scene(new VerificationScreen(primaryStage, databaseHelper), 400, 300));
             primaryStage.show();
         });
 
@@ -95,14 +95,14 @@ public class LoginScreen extends VBox {
 
     // Method to display the dashboard screen
     private void showDashboard() {
-        Dashboard dashboardScreen = new Dashboard(primaryStage, databaseHelper);
-        primaryStage.setScene(new Scene(dashboardScreen, 500, 400));
+        Dashboard dashboard = new Dashboard(primaryStage, databaseHelper);
+        primaryStage.setScene(new Scene(dashboard, 500, 400));
         primaryStage.show();
     }
     
     private void showInstructorDashboard() {
-        Dashboard dashboardScreen = new Dashboard(primaryStage, databaseHelper);
-        primaryStage.setScene(new Scene(dashboardScreen, 500, 400));
+        Dashboard dashboard = new Dashboard(primaryStage, databaseHelper);
+        primaryStage.setScene(new Scene(dashboard, 500, 400));
         primaryStage.show();
     }
 

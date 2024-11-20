@@ -10,17 +10,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class InstructorRegistrationScreen extends VBox {
+public class StudentRegistrationScreen extends VBox {
 
     // Constructor initializes the instructor registration screen UI
-    public InstructorRegistrationScreen(Stage stage, DatabaseHelper databaseHelper) {
+    public StudentRegistrationScreen(Stage stage, DatabaseHelper databaseHelper) {
         VBox title = new VBox(); // Container for title section
         title.setPadding(new Insets(10)); // Set padding for title section
         title.setAlignment(Pos.CENTER); // Center-align title
         title.setStyle(StartCSE360.blueBackground); // Apply blue background style
         
         // Create the main title label
-        Label titleLabel = new Label("Instructor Registration"); // Application title
+        Label titleLabel = new Label("Student Registration"); // Application title
         titleLabel.setStyle(StartCSE360.h1); // Apply title text styling
 
         // Email input field
@@ -64,7 +64,7 @@ public class InstructorRegistrationScreen extends VBox {
                 // Check if the user already exists in the database
                 if(!databaseHelper.doesUserExist(email)) {
 	                    // Register instructor in the database
-	                    databaseHelper.register(email, password, "instructor", firstName, middleName, lastName, preferredName);
+	                    databaseHelper.register(email, password, "student", firstName, middleName, lastName, preferredName);
 	                    System.out.println("User setup completed.");
 	                    databaseHelper.displayUsersByAdmin(); // For debugging purposes
 	                    new StartCSE360().showLoginScreen(stage, databaseHelper);
