@@ -5,19 +5,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import application.Article;
 
 public class InstructorDashboard extends VBox {
 
-    // Constructor initializes the dashboard screen UI
     public InstructorDashboard(Stage stage, DatabaseHelper databaseHelper) {
 
-        
-        // Button to navigate to List Groups screen
-        Button listGroupsButton = new Button("List Special Access Groups");
+        Button listGroupsButton = new Button("List Special Access Groups 2");
         listGroupsButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
         listGroupsButton.setOnAction(e -> {
-            stage.setScene(new Scene(new ListSpecialAccessGroupsScreen(stage, databaseHelper), 500, 400));
+            stage.setScene(new Scene(new ListSpecialAccessGroups2(stage, databaseHelper), 500, 400));
         });
         
         // Button to navigate to Backup Articles screen
@@ -41,41 +37,20 @@ public class InstructorDashboard extends VBox {
             stage.setScene(new Scene(new ViewUserScreen(stage, databaseHelper), 500, 400));
         });
         
-        // Button to navigate to Create Special Access Group screen
-        Button createGroupButton = new Button("Create Special Access Group");
-        createGroupButton.setOnAction(e -> stage.setScene(new Scene(new CreateSpecialAccessGroupScreen(stage, databaseHelper), 500, 400)));
-
-        // Button to navigate to Add Users to Group screen
-        Button addUserToGroupButton = new Button("Add Users to Group");
-        addUserToGroupButton.setOnAction(e -> {
-            // For simplicity, hardcoding groupId; ideally, this should be dynamic or selected by the user
-            int groupId = 1; // Replace with actual logic to get the selected group ID
-            stage.setScene(new Scene(new AddUsersToGroupScreen(stage, databaseHelper), 500, 400));
-        });
-
-        // Button to navigate to Add Articles to Group screen
-        Button addArticleToGroupButton = new Button("Add Articles to Group");
-        addArticleToGroupButton.setOnAction(e -> {
-            // For simplicity, hardcoding groupId; ideally, this should be dynamic or selected by the user
-            int groupId = 1; // Replace with actual logic to get the selected group ID
-            stage.setScene(new Scene(new AddArticlesToGroupScreen(stage, databaseHelper, groupId), 500, 400));
-        });
-
- 
-        // Logout button to return to login screen
+        
         Button logoutButton = new Button("Logout");
         logoutButton.setStyle("-fx-background-color: lightcoral;" + StartCSE360.h3bold);
         logoutButton.setOnAction(e -> {
             try {
-                new StartCSE360().showLoginScreen(stage, databaseHelper); // Show login screen
+                new StartCSE360().showLoginScreen(stage, databaseHelper);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
 
-        setAlignment(Pos.CENTER); // Center-align all elements
+        setAlignment(Pos.CENTER);
         getChildren().addAll(listGroupsButton, backupArticlesButton, restoreArticlesButton, viewUsersButton, logoutButton);
-        setSpacing(10); // Set spacing between buttons
-        setStyle("-fx-background-color: floralwhite;"); // Set background color
+        setSpacing(10);
+        setStyle("-fx-background-color: floralwhite;");
     }
 }
