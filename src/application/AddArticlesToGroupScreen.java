@@ -27,12 +27,28 @@ public class AddArticlesToGroupScreen extends VBox {
         // TextField for entering Article Title
         TextField articleTitleField = new TextField(); // Declare and initialize the article title field
         articleTitleField.setPromptText("Enter Article Title");
-
+        
+        // TextArea for entering Author(s)
+        TextField authorsArea = new TextField(); 
+        authorsArea.setPromptText("Enter Authour(s)");
+        
+        // TextArea for entering Abstract
+        TextField abstractsArea = new TextField(); 
+        abstractsArea.setPromptText("Enter Abstract");
+        
+        // TextArea for entering Keywords
+        TextField keywordsArea = new TextField(); 
+        keywordsArea.setPromptText("Enter Keyword(s)");
+        
         // TextArea for entering Article Body
-        TextArea articleBodyArea = new TextArea();
+        TextArea articleBodyArea = new TextArea(); 
         articleBodyArea.setPromptText("Enter Article Body");
         articleBodyArea.setWrapText(true);
 
+        // TextArea for entering References
+        TextField refsArea = new TextField(); 
+        refsArea.setPromptText("Enter Reference(s)");
+        
         // Button to submit the action
         Button addArticleButton = new Button("Add Article");
         addArticleButton.setOnAction(e -> {
@@ -40,7 +56,11 @@ public class AddArticlesToGroupScreen extends VBox {
                 // Retrieve inputs from the UI
                 int groupIdInput = Integer.parseInt(groupIdField.getText());
                 String title = articleTitleField.getText();
+                String authors = authorsArea.getText();
+                String abstracts = abstractsArea.getText();
+                String keywords = keywordsArea.getText();
                 String body = articleBodyArea.getText();
+                String refs = refsArea.getText();
 
                 // Validate inputs
                 if (title == null || title.isEmpty()) {
@@ -67,6 +87,6 @@ public class AddArticlesToGroupScreen extends VBox {
         backButton.setOnAction(e -> stage.setScene(new Scene(new Dashboard(stage, databaseHelper), 500, 400)));
 
         // Adding all elements to the VBox
-        getChildren().addAll(headerLabel, groupIdField, articleTitleField, articleBodyArea, addArticleButton, backButton);
+        getChildren().addAll(headerLabel, groupIdField, articleTitleField, authorsArea, keywordsArea, abstractsArea, articleBodyArea, refsArea, addArticleButton, backButton);
     }
 }

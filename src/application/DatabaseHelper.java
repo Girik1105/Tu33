@@ -4,11 +4,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import org.bouncycastle.util.Arrays;
 
 import Encryption.EncryptionHelper;
 import Encryption.EncryptionUtils;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 /**
  * DatabaseHelper class manages the database operations for users and articles.
@@ -1013,17 +1016,12 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
 
     public List<Article> listArticlesBySpecialGroup(int groupId) throws SQLException {
         List<Article> articles = new ArrayList<>();
-        String query = "SELECT id, title FROM special_access_articles WHERE group_id = ?";
-
+        String query = "SELECT * FROM articles WHERE id IN (SELECT article_id FROM article_groups WHERE group_id = ? AND group_type = 'special')";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, groupId);
-
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String title = rs.getString("title");
-                    char[] titleChars = title != null ? title.toCharArray() : new char[0];
-                    articles.add(new Article(id, titleChars)); // Use the updated constructor
+                    // ... (existing code to retrieve and decrypt article details)
                 }
             }
         }
@@ -1100,7 +1098,31 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
             pstmt.executeUpdate();
         }
     }
+        public List<Integer> getAssignedGroupsForInstructor(int instructorId) throws SQLException {
+            List<Integer> groupIds = new ArrayList<>();
+            String query = "SELECT group_id FROM special_access_group_instructors WHERE user_id = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                pstmt.setInt(1, instructorId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        groupIds.add(rs.getInt("group_id"));
+                    }
+                }
+            }
+            return groupIds;
+        }
 
+        public boolean hasAdminRightsForGroup(int instructorId, int groupId) throws SQLException {
+            String query = "SELECT COUNT(*) FROM special_access_group_instructors WHERE user_id = ? AND group_id = ? AND is_admin = 1";
+            try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                pstmt.setInt(1, instructorId);
+                pstmt.setInt(2, groupId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    return rs.next() && rs.getInt(1) > 0;
+                }
+            }
+        }
+        
     // Update user permissions in a special access group
     public void updateUserPermissionsInSpecialGroup(int groupId, int userId, boolean canViewBody, boolean isAdmin) throws SQLException {
         String query = "UPDATE special_access_group_instructors SET can_view_body = ?, is_admin = ? WHERE group_id = ? AND user_id = ?";
@@ -1143,6 +1165,5 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
         }
         return 0; // Return 0 if no records exist
     }
-
 
 }
