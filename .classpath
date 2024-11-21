@@ -11,12 +11,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX">
+	<classpathentry kind="lib" path="/Users/becca/BouncyCastle-2.73.6/bcprov-lts8on-2.73.6.jar"/>
+	<classpathentry kind="lib" path="/Users/becca/h2/bin/h2-2.3.232.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX21">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/girikmanchanda/BouncyCastle-2.73.6/bcprov-lts8on-2.73.6.jar"/>
-	<classpathentry kind="lib" path="/Users/girikmanchanda/h2/bin/h2-2.3.232.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
