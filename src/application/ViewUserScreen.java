@@ -38,8 +38,8 @@ public class ViewUserScreen extends VBox {
 
         // Invite User button 
         Button inviteUserButton = new Button("Invite User");
-        System.out.print("Instructor Registration Code: instructor\n"
-        		+ "Student Registration Code: student\n");
+        inviteUserButton.setOnAction(e -> System.out.print("Instructor Registration Code: instructor\n"
+        		+ "Student Registration Code: student\n"));
 
         // Reset a User button
         Button resetUser = new Button("Reset User");

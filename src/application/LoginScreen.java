@@ -108,8 +108,8 @@ public class LoginScreen extends VBox {
     }
     
     private void showStudentDashboard() {
-        Dashboard dashboard = new Dashboard(primaryStage, databaseHelper);
-        primaryStage.setScene(new Scene(dashboard, 500, 400));
+        StudentDashboard dashboard = new StudentDashboard(primaryStage, databaseHelper);
+        primaryStage.setScene(new Scene(dashboard, 500, 600));
         primaryStage.show();
     }
 
