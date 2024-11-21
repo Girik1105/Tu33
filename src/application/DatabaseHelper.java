@@ -340,23 +340,58 @@ public class DatabaseHelper {
 	    return users;
 	}
 
+	/**
+	 * Updates a user's details in the database.
+	 *
+	 * @param id            The ID of the user to update.
+	 * @param email         The new email address for the user.
+	 * @param password      The new password for the user (if provided).
+	 * @param role          The new role for the user.
+	 * @param firstName     The new first name for the user.
+	 * @param middleName    The new middle name for the user (optional).
+	 * @param lastName      The new last name for the user.
+	 * @param preferredName The new preferred name for the user (optional).
+	 * @throws Exception    If an error occurs during the update.
+	 */
+	public void updateUser(int id, String email, String password, String role, String firstName, 
+	                       String middleName, String lastName, String preferredName) throws Exception {
+	    // Ensure the user exists
+	    if (!doesUserExistById(id)) {
+	        throw new IllegalArgumentException("User ID not found.");
+	    }
 
-    public void updateUser(int id, String email, String password, String role, String firstName, 
-                       String middleName, String lastName, String preferredName) throws SQLException {
-        String updateSQL = "UPDATE cse360users SET email = ?, password = ?, role = ?, " +
-                        "firstName = ?, middleName = ?, lastName = ?, preferredName = ? WHERE id = ?";
-            try (PreparedStatement pstmt = connection.prepareStatement(updateSQL)) {
-                pstmt.setString(1, email);
-                pstmt.setString(2, password);  // Consider encrypting password as needed
-                pstmt.setString(3, role);
-                pstmt.setString(4, firstName);
-                pstmt.setString(5, middleName);
-                pstmt.setString(6, lastName);
-                pstmt.setString(7, preferredName);
-                pstmt.setInt(8, id);
-                pstmt.executeUpdate();
-            }
-}
+	    // Encrypt the password if it's provided
+	    String encryptedPassword = null;
+	    if (password != null && !password.trim().isEmpty()) {
+	        encryptedPassword = Base64.getEncoder().encodeToString(
+	            encryptionHelper.encrypt(password.getBytes(), EncryptionUtils.getInitializationVector(email.toCharArray()))
+	        );
+	    }
+
+	    // Prepare the update SQL query
+	    String updateSQL = "UPDATE cse360users SET email = ?, "
+	                     + (encryptedPassword != null ? "password = ?, " : "")
+	                     + "role = ?, firstName = ?, middleName = ?, lastName = ?, preferredName = ? WHERE id = ?";
+	    
+	    try (PreparedStatement pstmt = connection.prepareStatement(updateSQL)) {
+	        int paramIndex = 1;
+
+	        // Set parameters for the query
+	        pstmt.setString(paramIndex++, email);
+	        if (encryptedPassword != null) {
+	            pstmt.setString(paramIndex++, encryptedPassword); // Include password if provided
+	        }
+	        pstmt.setString(paramIndex++, role);
+	        pstmt.setString(paramIndex++, firstName);
+	        pstmt.setString(paramIndex++, (middleName != null && !middleName.trim().isEmpty()) ? middleName : null);
+	        pstmt.setString(paramIndex++, lastName);
+	        pstmt.setString(paramIndex++, (preferredName != null && !preferredName.trim().isEmpty()) ? preferredName : null);
+	        pstmt.setInt(paramIndex, id);
+
+	        // Execute the update
+	        pstmt.executeUpdate();
+	    }
+	}
 
     // Method to check if a user exists in the database by their ID
     public boolean doesUserExistById(int id) throws SQLException {
@@ -368,15 +403,42 @@ public class DatabaseHelper {
             }
     }
 
-    // Method to remove a user from the database by their ID
+    /**
+     * Removes a user from the database by their ID.
+     * Ensures that the removal does not violate the rule of having at least one admin in the system.
+     *
+     * @param id The ID of the user to remove.
+     * @throws SQLException If a database error occurs.
+     * @throws IllegalStateException If attempting to remove the last admin.
+     */
     public void removeUserById(int id) throws SQLException {
-        String deleteSQL = "DELETE FROM cse360users WHERE id = ?";
-            try (PreparedStatement pstmt = connection.prepareStatement(deleteSQL)) {
-                pstmt.setInt(1, id);
-                pstmt.executeUpdate();
+        // Check if the user being removed is an admin
+        String checkAdminQuery = "SELECT role FROM cse360users WHERE id = ?";
+        try (PreparedStatement checkStmt = connection.prepareStatement(checkAdminQuery)) {
+            checkStmt.setInt(1, id);
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    if ("admin".equals(role)) {
+                        // Ensure there are other admins before removing this admin
+                        if (!hasOtherAdmins()) {
+                            throw new IllegalStateException("Cannot remove the last admin. At least one admin is required.");
+                        }
+                    }
+                } else {
+                    throw new IllegalArgumentException("User ID not found.");
+                }
             }
-    }
+        }
 
+        // Proceed with user removal
+        String deleteSQL = "DELETE FROM cse360users WHERE id = ?";
+        try (PreparedStatement deleteStmt = connection.prepareStatement(deleteSQL)) {
+            deleteStmt.setInt(1, id);
+            deleteStmt.executeUpdate();
+        }
+    }
+    
 
     /**
      * Closes the database connection.
@@ -667,7 +729,8 @@ public class DatabaseHelper {
 /**
  * Checks if removing admin rights would leave no admin in the system.
  *
- * @return True if at least one admin exists, false otherwise.
+ * @return True if at least one other admin exists, false otherwise.
+ * @throws SQLException If a database error occurs.
  */
 public boolean hasOtherAdmins() throws SQLException {
     String query = "SELECT COUNT(*) FROM cse360users WHERE role = 'admin'";

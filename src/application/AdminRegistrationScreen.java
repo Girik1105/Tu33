@@ -1,5 +1,6 @@
 package application;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,7 +13,11 @@ import javafx.stage.Stage;
 public class AdminRegistrationScreen extends VBox {
 
     public AdminRegistrationScreen(Stage stage, DatabaseHelper databaseHelper) {
-    	
+        // Constructor initializes the instructor registration screen UI
+        VBox title = new VBox(); // Container for title section
+        title.setPadding(new Insets(10)); // Set padding for title section
+        title.setAlignment(Pos.CENTER); // Center-align title
+        title.setStyle(StartCSE360.blueBackground); // Apply blue background style
     	
         Label titleLabel = new Label("Admin Registration");
         TextField emailField = new TextField();
@@ -85,7 +90,7 @@ public class AdminRegistrationScreen extends VBox {
         Button backButton = new Button("Back to Dashboard");
         backButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));
         setAlignment(Pos.CENTER);
-        getChildren().addAll(titleLabel, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton, backButton); // Add components to VBox
+        getChildren().addAll(title, titleLabel, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton, backButton); // Add components to VBox
         setSpacing(10);
     }
     

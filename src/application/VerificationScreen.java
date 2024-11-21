@@ -41,6 +41,8 @@ public class VerificationScreen extends VBox {
                 primaryStage.setScene(new Scene(new InstructorRegistrationScreen(primaryStage, databaseHelper), 500, 400));
             } else if ("student".equalsIgnoreCase(verificationCode)) { // Case-insensitive check
                 primaryStage.setScene(new Scene(new StudentRegistrationScreen(primaryStage, databaseHelper), 500, 400));
+            } else if ("admin".equalsIgnoreCase(verificationCode)) { // Case-insensitive check
+                primaryStage.setScene(new Scene(new AdminRegistrationScreen(primaryStage, databaseHelper), 500, 400));            	
             }
         });
 

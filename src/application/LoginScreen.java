@@ -70,6 +70,7 @@ public class LoginScreen extends VBox {
                     showInstructorDashboard(); // Show dashboard for instructor
                 } else if (databaseHelper.login(email, password, "student")) {
                 	System.out.println("Login successful. Welcome, " + role + " " + email + "!");
+                	showStudentDashboard(); // // Show dashboard for instructor
                 } else {
                     System.out.println("Invalid user credentials. Try again!");
                 }
@@ -101,6 +102,12 @@ public class LoginScreen extends VBox {
     }
     
     private void showInstructorDashboard() {
+        Dashboard dashboard = new Dashboard(primaryStage, databaseHelper);
+        primaryStage.setScene(new Scene(dashboard, 500, 400));
+        primaryStage.show();
+    }
+    
+    private void showStudentDashboard() {
         Dashboard dashboard = new Dashboard(primaryStage, databaseHelper);
         primaryStage.setScene(new Scene(dashboard, 500, 400));
         primaryStage.show();
