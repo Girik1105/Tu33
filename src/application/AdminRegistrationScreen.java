@@ -1,5 +1,6 @@
 package application;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,6 +13,12 @@ import javafx.stage.Stage;
 public class AdminRegistrationScreen extends VBox {
 
     public AdminRegistrationScreen(Stage stage, DatabaseHelper databaseHelper) {
+        // Constructor initializes the instructor registration screen UI
+        VBox title = new VBox(); // Container for title section
+        title.setPadding(new Insets(10)); // Set padding for title section
+        title.setAlignment(Pos.CENTER); // Center-align title
+        title.setStyle(StartCSE360.blueBackground); // Apply blue background style
+    	
         Label titleLabel = new Label("Admin Registration");
         TextField emailField = new TextField();
         emailField.setPromptText("Enter Admin Email");
@@ -19,20 +26,20 @@ public class AdminRegistrationScreen extends VBox {
         passwordField.setPromptText("Enter Admin Password");
         
         // First Name input field
-        TextField firstName = new TextField();
-        firstName.setPromptText("Enter first name");
+        TextField firstNameField = new TextField();
+        firstNameField.setPromptText("Enter first name");
 
         // Middle Name input field
-        TextField middleName = new TextField();
-        middleName.setPromptText("Enter middle name (Optional)");
+        TextField middleNameField = new TextField();
+        middleNameField.setPromptText("Enter middle name (Optional - Enter N/A if unavailable)");
 
         // Last Name input field
-        TextField lastName = new TextField();
-        lastName.setPromptText("Enter last name");
+        TextField lastNameField = new TextField();
+        lastNameField.setPromptText("Enter last name");
 
         // Last Name input field
-        TextField preferredName = new TextField();
-        preferredName.setPromptText("Enter preferred name (Optional)");
+        TextField preferredNameField = new TextField();
+        preferredNameField.setPromptText("Enter preferred name (Optional - Enter N/A if unavailable)");
         
         setStyle("-fx-background-color: floralwhite;");
 
@@ -41,11 +48,16 @@ public class AdminRegistrationScreen extends VBox {
         registerButton.setOnAction(e -> {
             String email = emailField.getText();
             String password = passwordField.getText();
+            String firstName = firstNameField.getText();
+            String middleName = middleNameField.getText();
+            String lastName = lastNameField.getText();
+            String preferredName = preferredNameField.getText();
+            
             try {
             	// Check if user already exists in the database
             	if(!databaseHelper.doesUserExist(email)) {
             		// Register admin in database
-            		databaseHelper.register(email, password, "admin");
+            		databaseHelper.register(email, password, "admin", firstName, middleName, lastName, preferredName);
             		System.out.println("Administrator setup completed.");
             		databaseHelper.displayUsersByAdmin(); //debug
             		
@@ -78,7 +90,9 @@ public class AdminRegistrationScreen extends VBox {
         Button backButton = new Button("Back to Dashboard");
         backButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));
         setAlignment(Pos.CENTER);
-        getChildren().addAll(titleLabel, emailField, passwordField, firstName, middleName, lastName, preferredName, registerButton, backButton); // Add components to VBox
+        getChildren().addAll(title, titleLabel, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton, backButton); // Add components to VBox
         setSpacing(10);
     }
+    
+
 }

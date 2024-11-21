@@ -38,10 +38,12 @@ public class ViewUserScreen extends VBox {
 
         // Invite User button 
         Button inviteUserButton = new Button("Invite User");
+        System.out.print("Instructor Registration Code: instructor\n"
+        		+ "Student Registration Code: student\n");
 
         // Reset a User button
         Button resetUser = new Button("Reset User");
-
+        
         // Add a Role to User button
         Button addRole = new Button("Add Role from User");
 
@@ -60,6 +62,10 @@ public class ViewUserScreen extends VBox {
                     userText.append("ID: ").append(user.getId()).append("\n")
                             .append("Email: ").append(user.getEmail()).append("\n")
                             .append("Role: ").append(user.getRole()).append("\n")
+                            .append("First Name: ").append(user.getFirstName()).append("\n")
+                            .append("Middle Name: ").append(user.getMiddleName()).append("\n")
+                            .append("Last Name: ").append(user.getLastName()).append("\n")
+                            .append("Preferred Name: ").append(user.getPreferredName()).append("\n")
                             .append("----------------------------------------\n");
                 }
                 usersArea.setText(userText.toString());
@@ -70,7 +76,7 @@ public class ViewUserScreen extends VBox {
         }
 
         // Add elements to VBox, including the new Edit and Remove User button
-        getChildren().addAll(headerLabel, usersArea, editUserButton, removeUserButton,inviteUserButton,resetUser,addRole, removeRole, backButton);
+        getChildren().addAll(headerLabel, usersArea, editUserButton, removeUserButton, inviteUserButton, resetUser, addRole, removeRole, backButton);
 
     }
 }

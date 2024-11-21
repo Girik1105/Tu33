@@ -65,8 +65,12 @@ public class LoginScreen extends VBox {
                 if (databaseHelper.login(email, password, "admin")) {
                     System.out.println("Login successful. Welcome, " + role + " " + email + "!");
                     showDashboard(); // Show dashboard for admin
-                } else if (databaseHelper.login(email, password, "user")) {
+                } else if (databaseHelper.login(email, password, "instructor")) {
                     System.out.println("Login successful. Welcome, " + role + " " + email + "!");
+                    showInstructorDashboard(); // Show dashboard for instructor
+                } else if (databaseHelper.login(email, password, "student")) {
+                	System.out.println("Login successful. Welcome, " + role + " " + email + "!");
+                	showStudentDashboard(); // // Show dashboard for instructor
                 } else {
                     System.out.println("Invalid user credentials. Try again!");
                 }
@@ -79,7 +83,7 @@ public class LoginScreen extends VBox {
         Button registerButton = new Button("Register");
         registerButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
         registerButton.setOnAction(e -> {
-            primaryStage.setScene(new Scene(new InstructorRegistrationScreen(primaryStage, databaseHelper), 400, 300));
+            primaryStage.setScene(new Scene(new VerificationScreen(primaryStage, databaseHelper), 400, 300));
             primaryStage.show();
         });
 
@@ -92,8 +96,25 @@ public class LoginScreen extends VBox {
 
     // Method to display the dashboard screen
     private void showDashboard() {
-        Dashboard dashboardScreen = new Dashboard(primaryStage, databaseHelper);
-        primaryStage.setScene(new Scene(dashboardScreen, 500, 400));
+        Dashboard dashboard = new Dashboard(primaryStage, databaseHelper);
+        primaryStage.setScene(new Scene(dashboard, 500, 400));
         primaryStage.show();
     }
+    
+    private void showInstructorDashboard() {
+        Dashboard dashboard = new Dashboard(primaryStage, databaseHelper);
+        primaryStage.setScene(new Scene(dashboard, 500, 400));
+        primaryStage.show();
+    }
+    
+    private void showStudentDashboard() {
+        Dashboard dashboard = new Dashboard(primaryStage, databaseHelper);
+        primaryStage.setScene(new Scene(dashboard, 500, 400));
+        primaryStage.show();
+    }
+
+	public static void start(Stage primaryStage2) {
+		// TODO Auto-generated method stub
+		
+	}
 }

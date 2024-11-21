@@ -6,47 +6,36 @@ package application;
  * body, and references, which are all represented as character arrays.
  */
 public class Article {
-    private int id; // Sequence number of the article
-    private char[] title; // Title of the article
-    private char[] authors; // Authors of the article
-    private char[] abstractText; // Abstract of the article
-    private char[] keywords; // Keywords associated with the article
-    private char[] body; // Main content of the article
-    private char[] references; // References cited in the article
+    private int id;
+    private char[] title;
+    private char[] authors;
+    private char[] abstractText;
+    private char[] keywords;
+    private char[] body;
+    private char[] references;
 
-    // Default constructor
+    // Default Constructor
     public Article() {}
 
-    // Getters and setters
+    // Parameterized Constructor
+    public Article(int id, char[] title) {
+        this.id = id;
+        this.title = title;
+    }
 
-    /**
-     * Gets the sequence number of the article.
-     * @return the article's ID.
-     */
+    // Getters and Setters
     public int getId() {
         return id;
     }
 
-    /**
-     * Sets the sequence number of the article.
-     * @param id the article's ID.
-     */
     public void setId(int id) {
         this.id = id;
     }
 
-    /**
-     * Gets the title of the article.
-     * @return the title as a char array.
-     */
     public char[] getTitle() {
         return title;
     }
 
-    /**
-     * Sets the title of the article.
-     * @param title a char array representing the title.
-     */
     public void setTitle(char[] title) {
         this.title = title;
     }
@@ -144,4 +133,5 @@ public class Article {
         if (body != null) java.util.Arrays.fill(body, ' '); // Clear body
         if (references != null) java.util.Arrays.fill(references, ' '); // Clear references
     }
+    
 }
