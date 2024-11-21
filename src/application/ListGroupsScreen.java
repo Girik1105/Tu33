@@ -30,13 +30,13 @@ public class ListGroupsScreen extends VBox {
 
         try {
             // Fetch list of articles from the database
-            List<Article> articles = databaseHelper.listArticles();
+            List<Article> groups = databaseHelper.listSpecialAccessGroups();
             if (articles.isEmpty()) {
                 articlesArea.setText("No articles found."); // Display if no articles
             } else {
                 // Build string representation of articles
                 StringBuilder articleText = new StringBuilder();
-                for (Article article : articles) {
+                for (SpecialAccessGroup group : groups) {
                     articleText.append("ID: ").append(article.getId()).append("\n")
                                .append("Title: ").append(article.getTitle()).append("\n")
                                .append("Authors: ").append(article.getAuthors()).append("\n")
