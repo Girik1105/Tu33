@@ -11,7 +11,7 @@ public class SpecialAccessGroupService {
 
     public void createGroup(String name, String description, int adminUserId) throws SQLException {
         databaseHelper.addSpecialAccessGroup(name, description);
-        int groupId = databaseHelper.getLastInsertedId("special_access_groups"); // Utility method assumed
+        int groupId = databaseHelper.getLastInsertedId("special_access_groups"); // Get the last inserted group ID
         databaseHelper.addGroupAdmin(groupId, adminUserId);
     }
 
@@ -20,6 +20,6 @@ public class SpecialAccessGroupService {
     }
 
     public void addArticleToGroup(int groupId, int articleId) throws SQLException {
-        databaseHelper.addArticleToSpecialGroup(groupId, null, null);
+        databaseHelper.addArticleToSpecialGroup(groupId, articleId);
     }
 }

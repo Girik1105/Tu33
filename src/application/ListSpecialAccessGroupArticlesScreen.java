@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -21,17 +20,14 @@ public class ListSpecialAccessGroupArticlesScreen extends VBox {
 
         Label headerLabel = new Label("Articles in Group ID: " + groupId);
         ListView<Article> articleListView = new ListView<>();
-        
 
-        // Populate the list of articles in the group
         try {
             List<Article> articles = databaseHelper.listArticlesBySpecialGroup(groupId);
             articleListView.getItems().addAll(articles);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // Back button to return to the Dashboard
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> stage.setScene(new Scene(new ListSpecialAccessGroupsScreen(stage, databaseHelper), 500, 400)));
 
