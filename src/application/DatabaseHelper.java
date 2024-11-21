@@ -217,15 +217,61 @@ public class DatabaseHelper {
         );
 
         String insertUser = "INSERT INTO cse360users (email, password, role, firstName, middleName, lastName, preferredName) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(insertUser)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(insertUser, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, email);
             pstmt.setString(2, encryptedPassword);
             pstmt.setString(3, role);
-            pstmt.setString(4, firstName);  // Ensure the variable names match column names
+            pstmt.setString(4, firstName);
             pstmt.setString(5, middleName);
             pstmt.setString(6, lastName);
             pstmt.setString(7, preferredName);
             pstmt.executeUpdate();
+
+            // Get the generated user ID
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int userId = generatedKeys.getInt(1);
+
+                // Assign group ID if user is an admin
+                if ("admin".equalsIgnoreCase(role)) {
+                    assignAdminToGroup(userId, 1); // Admin gets group ID 1
+                } else {
+                    assignUserToNewGroup(userId); // Other users get a new group ID
+                }
+            }
+        }
+    }
+    private void assignAdminToGroup(int userId, int groupId) throws SQLException {
+        String query = "INSERT INTO special_access_group_admins (group_id, user_id) VALUES (?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, userId);
+            pstmt.executeUpdate();
+        }
+    }
+
+    private void assignUserToNewGroup(int userId) throws SQLException {
+        // Create a new group for the user
+        String createGroupQuery = "INSERT INTO special_access_groups (name, description) VALUES (?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(createGroupQuery, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, "User Group " + userId);
+            pstmt.setString(2, "Default group for user " + userId);
+            pstmt.executeUpdate();
+
+            // Get the generated group ID
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int groupId = generatedKeys.getInt(1);
+
+                // Assign the user to the new group
+                String assignUserQuery = "INSERT INTO special_access_group_students (group_id, user_id, can_view_body) VALUES (?, ?, ?)";
+                try (PreparedStatement assignStmt = connection.prepareStatement(assignUserQuery)) {
+                    assignStmt.setInt(1, groupId);
+                    assignStmt.setInt(2, userId);
+                    assignStmt.setBoolean(3, true);
+                    assignStmt.executeUpdate();
+                }
+            }
         }
     }
 
@@ -745,6 +791,24 @@ public boolean hasOtherAdmins() throws SQLException {
     return false;
 }
 
+public List<SpecialAccessGroup> listGroupsForSuperAdmin() throws SQLException {
+    List<SpecialAccessGroup> groups = new ArrayList<>();
+    String query = "SELECT id, name, description FROM special_access_groups";
+
+    try (Statement stmt = connection.createStatement();
+         ResultSet rs = stmt.executeQuery(query)) {
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            String description = rs.getString("description");
+
+            groups.add(new SpecialAccessGroup(id, name, description));
+        }
+    }
+    return groups;
+}
+
     /**
     * Updates the role of a user but ensures admin removal rules are not violated.
     *
@@ -932,6 +996,54 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
             pstmt.setInt(2, userId);
             pstmt.setBoolean(3, canViewBody);
             pstmt.setBoolean(4, isAdmin);
+            pstmt.executeUpdate();
+        }
+    }
+    
+ // Add user to a group
+    public void addUserToGroup(int groupId, int userId, boolean canViewBody, boolean isAdmin) throws SQLException {
+        String query = isAdmin ? 
+            "INSERT INTO special_access_group_admins (group_id, user_id) VALUES (?, ?)" :
+            "INSERT INTO special_access_group_students (group_id, user_id, can_view_body) VALUES (?, ?, ?)";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, userId);
+            if (!isAdmin) {
+                pstmt.setBoolean(3, canViewBody);
+            }
+            pstmt.executeUpdate();
+        }
+    }
+
+    // Update user permissions
+    public void updateUserPermissionsInGroup(int groupId, int userId, boolean canViewBody, boolean isAdmin) throws SQLException {
+        String query = isAdmin ?
+            "UPDATE special_access_group_admins SET group_id = ? WHERE user_id = ?" :
+            "UPDATE special_access_group_students SET can_view_body = ? WHERE group_id = ? AND user_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            if (isAdmin) {
+                pstmt.setInt(1, groupId);
+                pstmt.setInt(2, userId);
+            } else {
+                pstmt.setBoolean(1, canViewBody);
+                pstmt.setInt(2, groupId);
+                pstmt.setInt(3, userId);
+            }
+            pstmt.executeUpdate();
+        }
+    }
+
+    // Remove user from a group
+    public void removeUserFromGroup(int groupId, int userId, boolean isAdmin) throws SQLException {
+        String query = isAdmin ?
+            "DELETE FROM special_access_group_admins WHERE group_id = ? AND user_id = ?" :
+            "DELETE FROM special_access_group_students WHERE group_id = ? AND user_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, userId);
             pstmt.executeUpdate();
         }
     }
