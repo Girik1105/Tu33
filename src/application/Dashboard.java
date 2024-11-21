@@ -36,7 +36,7 @@ public class Dashboard extends VBox {
         Button listGroupsButton = new Button("List Special Access Groups");
         listGroupsButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
         listGroupsButton.setOnAction(e -> {
-            stage.setScene(new Scene(new ListGroupsScreen(stage, databaseHelper), 500, 400));
+            stage.setScene(new Scene(new ListSpecialAccessGroupsScreen(stage, databaseHelper), 500, 400));
         });
         
         // Button to navigate to Backup Articles screen

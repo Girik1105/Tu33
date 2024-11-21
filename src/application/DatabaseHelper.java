@@ -440,6 +440,8 @@ public class DatabaseHelper {
     }
     
 
+
+
     /**
      * Closes the database connection.
      */
@@ -880,7 +882,85 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
             pstmt.executeUpdate();
         }
     }
+// Special groups ===============
+    // List special access groups
+    public List<SpecialAccessGroup> listSpecialAccessGroups() throws SQLException {
+        List<SpecialAccessGroup> groups = new ArrayList<>();
+        String query = "SELECT id, name, description FROM special_access_groups";
 
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+
+                groups.add(new SpecialAccessGroup(id, name, description));
+            }
+        }
+
+        return groups;
+    }
+
+
+    public List<Article> listArticlesBySpecialGroup(int groupId) throws SQLException {
+        List<Article> articles = new ArrayList<>();
+        String query = "SELECT id, title FROM special_access_articles WHERE group_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, groupId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String title = rs.getString("title");
+                    char[] titleChars = title != null ? title.toCharArray() : new char[0];
+                    articles.add(new Article(id, titleChars)); // Use the updated constructor
+                }
+            }
+        }
+        return articles;
+    }
+
+// Add user access to a special access group
+    public void addUserToSpecialGroup(int groupId, int userId, boolean canViewBody, boolean isAdmin) throws SQLException {
+        String query = "INSERT INTO special_access_group_instructors (group_id, user_id, can_view_body, is_admin) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, userId);
+            pstmt.setBoolean(3, canViewBody);
+            pstmt.setBoolean(4, isAdmin);
+            pstmt.executeUpdate();
+        }
+    }
+
+    // Update user permissions in a special access group
+    public void updateUserPermissionsInSpecialGroup(int groupId, int userId, boolean canViewBody, boolean isAdmin) throws SQLException {
+        String query = "UPDATE special_access_group_instructors SET can_view_body = ?, is_admin = ? WHERE group_id = ? AND user_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setBoolean(1, canViewBody);
+            pstmt.setBoolean(2, isAdmin);
+            pstmt.setInt(3, groupId);
+            pstmt.setInt(4, userId);
+            pstmt.executeUpdate();
+        }
+    }
+
+    // Remove user from a special access group
+    public void removeUserFromSpecialGroup(int groupId, int userId) throws SQLException {
+        String query = "DELETE FROM special_access_group_instructors WHERE group_id = ? AND user_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, userId);
+            pstmt.executeUpdate();
+        }
+    }  
+    
+//
     /**
     * Retrieves the last inserted ID for a specific table.
     *
