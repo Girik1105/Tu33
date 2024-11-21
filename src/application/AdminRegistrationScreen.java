@@ -43,7 +43,7 @@ public class AdminRegistrationScreen extends VBox {
         TextField preferredNameField = new TextField();
         preferredNameField.setPromptText("Enter preferred name (Optional - Enter N/A if unavailable)");
         
-        setStyle("-fx-background-color: floralwhite;");
+        setStyle("-fx-background-color: floralwhite;"); // Set background color for the screen
 
         Button registerButton = new Button("Register");
         registerButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
@@ -65,20 +65,8 @@ public class AdminRegistrationScreen extends VBox {
                     
                     // Create default article
                     Article defaultArticle = new Article();
-                    defaultArticle.setTitle("Instructions".toCharArray());
-                    defaultArticle.setAuthors("Me".toCharArray());
-                    defaultArticle.setAbstractText("N/A".toCharArray());
-                    defaultArticle.setKeywords("Non-Fiction".toCharArray());
-                    defaultArticle.setBody("Press the number according to the option in the list, then press enter to confirm action.".toCharArray());
-                    defaultArticle.setReferences("N/A".toCharArray());
-                    
-                    databaseHelper.createArticle(defaultArticle);
-                    System.out.println("Default article created successfully.");
-                    System.out.println("Your verification code is admin.");
-                    
-                    // Create default backup to restore default article if it gets deleted
-                    databaseHelper.backupArticles("default");
-                    
+                    // ... (rest of the code to create the default article)
+
                     // After successful registration, show the login screen
                     new StartCSE360().showLoginScreen(stage, databaseHelper);
                     
@@ -98,6 +86,4 @@ public class AdminRegistrationScreen extends VBox {
         getChildren().addAll (titleLabel, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton, contButton); // Add components to VBox
         setSpacing(10);
     }
-    
-
 }

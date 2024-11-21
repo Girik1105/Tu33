@@ -242,8 +242,32 @@ public class DatabaseHelper {
         }
     }
     private void assignAdminToGroup(int userId, int groupId) throws SQLException {
-        String query = "INSERT INTO special_access_group_admins (group_id, user_id) VALUES (?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+        // Check if a group with the specified ID exists
+        String checkGroupQuery = "SELECT COUNT(*) FROM special_access_groups WHERE id = ?";
+        try (PreparedStatement checkStmt = connection.prepareStatement(checkGroupQuery)) {
+            checkStmt.setInt(1, groupId);
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) == 0) {
+                    // Group doesn't exist, create a new one for admins
+                    String createGroupQuery = "INSERT INTO special_access_groups (name, description) VALUES (?, ?)";
+                    try (PreparedStatement createStmt = connection.prepareStatement(createGroupQuery, Statement.RETURN_GENERATED_KEYS)) {
+                        createStmt.setString(1, "Admin Group");
+                        createStmt.setString(2, "Default group for admins");
+                        createStmt.executeUpdate();
+
+                        // Get the generated group ID
+                        ResultSet generatedKeys = createStmt.getGeneratedKeys();
+                        if (generatedKeys.next()) {
+                            groupId = generatedKeys.getInt(1);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Now insert the user into the admin group
+        String insertAdminQuery = "INSERT INTO special_access_group_admins (group_id, user_id) VALUES (?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(insertAdminQuery)) {
             pstmt.setInt(1, groupId);
             pstmt.setInt(2, userId);
             pstmt.executeUpdate();

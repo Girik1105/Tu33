@@ -43,7 +43,7 @@ public class StartCSE360 extends Application {
         	showLoginScreen(primaryStage, databaseHelper); // Show login screen if admin setup is complete
         	
         } else {
-            primaryStage.setScene(new Scene(new AdminRegistrationScreen(primaryStage, databaseHelper), 400, 300));
+            primaryStage.setScene(new Scene(new AdminRegistrationScreen(primaryStage, databaseHelper), 500, 400));
             primaryStage.show();
         }
     }

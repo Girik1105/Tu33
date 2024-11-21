@@ -123,7 +123,7 @@ public class StudentDashboard extends VBox {
 
         // Logout Button
         Button logoutButton = new Button("Logout");
-        logoutButton.setStyle(StartCSE360.buttonStyle + StartCSE360.h3bold);
+        logoutButton.setStyle("-fx-background-color: lightcoral;" + StartCSE360.h3bold);
         logoutButton.setOnAction(e -> {
             primaryStage.setScene(new Scene(new LoginScreen(primaryStage, databaseHelper), 400, 300));
             primaryStage.show();
