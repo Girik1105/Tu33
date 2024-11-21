@@ -11,15 +11,15 @@ public class SpecialAccessGroupService {
 
     public void createGroup(String name, String description, int adminUserId) throws SQLException {
         databaseHelper.addSpecialAccessGroup(name, description);
-        int groupId = databaseHelper.getLastInsertedId("special_access_groups"); // Assuming a utility method exists
+        int groupId = databaseHelper.getLastInsertedId("special_access_groups"); // Utility method assumed
         databaseHelper.addGroupAdmin(groupId, adminUserId);
     }
 
-    public void addInstructor(int groupId, int userId) throws SQLException {
-        databaseHelper.addGroupInstructor(groupId, userId);
+    public void addUserToGroup(int groupId, int userId, boolean canViewBody, boolean isAdmin) throws SQLException {
+        databaseHelper.addUserToSpecialGroup(groupId, userId, canViewBody, isAdmin);
     }
 
-    public void addStudent(int groupId, int userId, boolean canViewBody) throws SQLException {
-        databaseHelper.addGroupStudent(groupId, userId, canViewBody);
+    public void addArticleToGroup(int groupId, int articleId) throws SQLException {
+        databaseHelper.addArticleToSpecialGroup(groupId, null, null);
     }
 }

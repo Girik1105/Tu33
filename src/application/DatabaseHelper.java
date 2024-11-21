@@ -773,6 +773,26 @@ public class DatabaseHelper {
         }
         return false;
     }
+    
+    public void addInstructorToSpecialGroup(int groupId, int userId, boolean canViewBody) throws SQLException {
+        String sql = "INSERT INTO special_access_group_instructors (group_id, user_id, can_view_body, is_admin) VALUES (?, ?, ?, TRUE)";
+        try (var pstmt = getConnection().prepareStatement(sql)) {
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, userId);
+            pstmt.setBoolean(3, canViewBody);
+            pstmt.executeUpdate();
+        }
+    }
+
+    public void addStudentToSpecialGroup(int groupId, int userId, boolean canViewBody) throws SQLException {
+        String sql = "INSERT INTO special_access_group_students (group_id, user_id, can_view_body) VALUES (?, ?, ?)";
+        try (var pstmt = getConnection().prepareStatement(sql)) {
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, userId);
+            pstmt.setBoolean(3, canViewBody);
+            pstmt.executeUpdate();
+        }
+    }
 
 /**
  * Checks if removing admin rights would leave no admin in the system.
@@ -848,15 +868,14 @@ public List<SpecialAccessGroup> listGroupsForSuperAdmin() throws SQLException {
     /**
  * Adds a new special access group.
  */
-public void addSpecialAccessGroup(String name, String description) throws SQLException {
-    String query = "INSERT INTO special_access_groups (name, description) VALUES (?, ?)";
-    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-        pstmt.setString(1, name);
-        pstmt.setString(2, description);
-        pstmt.executeUpdate();
+    public void addSpecialAccessGroup(String name, String description) throws SQLException {
+        String sql = "INSERT INTO special_access_groups (name, description) VALUES (?, ?)";
+        try (var pstmt = getConnection().prepareStatement(sql)) {
+            pstmt.setString(1, name);
+            pstmt.setString(2, description);
+            pstmt.executeUpdate();
+        }
     }
-}
-
 /**
  * Adds an admin to a special access group.
  */
@@ -989,9 +1008,8 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
 
 // Add user access to a special access group
     public void addUserToSpecialGroup(int groupId, int userId, boolean canViewBody, boolean isAdmin) throws SQLException {
-        String query = "INSERT INTO special_access_group_instructors (group_id, user_id, can_view_body, is_admin) VALUES (?, ?, ?, ?)";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+        String sql = "INSERT INTO special_access_group_instructors (group_id, user_id, can_view_body, is_admin) VALUES (?, ?, ?, ?)";
+        try (var pstmt = getConnection().prepareStatement(sql)) {
             pstmt.setInt(1, groupId);
             pstmt.setInt(2, userId);
             pstmt.setBoolean(3, canViewBody);
@@ -999,6 +1017,17 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
             pstmt.executeUpdate();
         }
     }
+    
+    public void addArticleToSpecialGroup(int groupId, String title, String body) throws SQLException {
+        String sql = "INSERT INTO special_access_articles (group_id, title, body) VALUES (?, ?, ?)";
+        try (var pstmt = getConnection().prepareStatement(sql)) {
+            pstmt.setInt(1, groupId);   // Set the group ID
+            pstmt.setString(2, title); // Set the article title
+            pstmt.setString(3, body);  // Set the article body
+            pstmt.executeUpdate();     // Execute the SQL statement
+        }
+    }
+
     
  // Add user to a group
     public void addUserToGroup(int groupId, int userId, boolean canViewBody, boolean isAdmin) throws SQLException {

@@ -59,7 +59,29 @@ public class Dashboard extends VBox {
         viewUsersButton.setOnAction(e -> {
             stage.setScene(new Scene(new ViewUserScreen(stage, databaseHelper), 500, 400));
         });
+        
+        
+        // Button to navigate to Create Special Access Group screen
+        Button createGroupButton = new Button("Create Special Access Group");
+        createGroupButton.setOnAction(e -> stage.setScene(new Scene(new CreateSpecialAccessGroupScreen(stage, databaseHelper), 500, 400)));
 
+        // Button to navigate to Add Users to Group screen
+        Button addUserToGroupButton = new Button("Add Users to Group");
+        addUserToGroupButton.setOnAction(e -> {
+            // For simplicity, hardcoding groupId; ideally, this should be dynamic or selected by the user
+            int groupId = 1; // Replace with actual logic to get the selected group ID
+            stage.setScene(new Scene(new AddUsersToGroupScreen(stage, databaseHelper), 500, 400));
+        });
+
+        // Button to navigate to Add Articles to Group screen
+        Button addArticleToGroupButton = new Button("Add Articles to Group");
+        addArticleToGroupButton.setOnAction(e -> {
+            // For simplicity, hardcoding groupId; ideally, this should be dynamic or selected by the user
+            int groupId = 1; // Replace with actual logic to get the selected group ID
+            stage.setScene(new Scene(new AddArticlesToGroupScreen(stage, databaseHelper, groupId), 500, 400));
+        });
+
+ 
         // Logout button to return to login screen
         Button logoutButton = new Button("Logout");
         logoutButton.setStyle("-fx-background-color: lightcoral;" + StartCSE360.h3bold);
