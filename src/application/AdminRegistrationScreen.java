@@ -79,11 +79,11 @@ public class AdminRegistrationScreen extends VBox {
             }
         });
         
-        Button contButton = new Button("Continue to Login");
+        /*Button contButton = new Button("Continue to Login");
         contButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
-        contButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));
+        contButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));*/
         setAlignment(Pos.CENTER);
-        getChildren().addAll (titleLabel, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton, contButton); // Add components to VBox
+        getChildren().addAll (titleLabel, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton); // Add components to VBox
         setSpacing(10);
     }
 }
