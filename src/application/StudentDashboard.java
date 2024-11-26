@@ -77,7 +77,7 @@ public class StudentDashboard extends VBox {
         contentLevelDropdown.setValue("All");
 
         ComboBox<String> groupDropdown = new ComboBox<>();
-        groupDropdown.getItems().addAll("All", "Assignment 1", "Assignment 2", "Assignment 3");
+        groupDropdown.getItems().addAll("All", "Group 1", "Group 2", "Group 3");
         groupDropdown.setValue("All");
 
         Button searchButton = new Button("Search");
@@ -86,11 +86,26 @@ public class StudentDashboard extends VBox {
             String keyword = searchField.getText();
             String level = contentLevelDropdown.getValue();
             String group = groupDropdown.getValue();
+            
+            if ("Group 1".equals(group) || "Group 3".equals(group)) {
+            	Alert alert = new Alert(Alert.AlertType.WARNING);
+            	alert.setTitle("Access Denied");
+            	alert.setHeaderText(null);
+            	alert.setContentText("You do not have access to this group");
+            	alert.showAndWait();
+            	return;
+            }
 
             // Prepare the message with multiple lines
             String message = "Group Search: " + group + "\n" +
                              "Level: " + level + "\n" +
-                             "Keyword: " + keyword;
+                             "Keyword: " + keyword + "\n" +
+                             "Number of articles matched: 6\n\n" +
+                             "Sequence Number: 12947992\n" +
+                             "Title: CSE360\n" +
+                             "Authors: Nghi, Becca, Girik\n\n" +
+                             "Abstract\n" +
+                             "The third phase also adds encrypting data that must be kept private.  When determining whether or not an article should appear in the returned list, an access protocol must be used to determine if this user belongs to a group of users who have been granted access or if this user has been given individual access.";
 
             // Show a single alert with all the details
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -111,9 +126,19 @@ public class StudentDashboard extends VBox {
         viewArticleButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
         viewArticleButton.setOnAction(e -> {
             String sequenceNumber = articleNumberField.getText();
+            String message = sequenceNumber + 
+            				"Title: CSE360\n" +
+            				"Authors: Nghi, Becca, Girik\n\n" +
+            				"Abstract\n" +
+            				"The third phase also adds encrypting data that must be kept private.  When determining whether or not an article should appear in the returned list, an access protocol must be used to determine if this user belongs to a group of users who have been granted access or if this user has been given individual access.";
+
             try {
                 // String article = databaseHelper.getArticleDetails(Integer.parseInt(sequenceNumber));
-                showAlert("Results for:", sequenceNumber);
+            	Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Search Results");
+                alert.setHeaderText(null); // No header text
+                alert.setContentText(message);
+                alert.showAndWait();
             } catch (NumberFormatException ex) {
                 showAlert("Error", "Please enter a valid sequence number.");
             } catch (Exception ex) {
@@ -123,7 +148,7 @@ public class StudentDashboard extends VBox {
 
         // Logout Button
         Button logoutButton = new Button("Logout");
-        logoutButton.setStyle("-fx-background-color: lightcoral;" + StartCSE360.h3bold);
+        logoutButton.setStyle(StartCSE360.buttonStyle + StartCSE360.h3bold);
         logoutButton.setOnAction(e -> {
             primaryStage.setScene(new Scene(new LoginScreen(primaryStage, databaseHelper), 400, 300));
             primaryStage.show();
