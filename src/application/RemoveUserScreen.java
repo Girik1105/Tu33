@@ -28,17 +28,22 @@ public class RemoveUserScreen extends VBox {
         confirmButton.setOnAction(e -> {
             try {
                 int userId = Integer.parseInt(userIdField.getText());  // Parses the user ID from the TextField
-                if (databaseHelper.doesUserExistById(userId)) {  // Checks if the user exists in the database
-                    databaseHelper.removeUserById(userId);  // Removes the user from the database
-                    instructionLabel.setText("User removed successfully!");  // Updates label on success
+                
+                if (databaseHelper.doesUserExistById(userId)) {  // Check if the user exists in the database
+                    /*if (databaseHelper.isAdminUser(userId)) {  // Check if the user is an admin
+                        instructionLabel.setText("User is an admin and cannot be deleted.");  // Notify user
+                    }*/ //else {
+                        databaseHelper.removeUserById(userId);  // Remove the user
+                        instructionLabel.setText("User removed successfully!");  // Notify success
+                    //}
                 } else {
                     instructionLabel.setText("User ID not found.");  // Error message if user ID does not exist
                 }
             } catch (NumberFormatException ex) {
                 instructionLabel.setText("Please enter a valid user ID.");  // Error for non-integer input
             } catch (Exception ex) {
-                instructionLabel.setText("An error occurred during removal.");  // Error for database issues
-                ex.printStackTrace();  // Prints error details to console
+                instructionLabel.setText("An error occurred during removal.");  // Generic error handling
+                ex.printStackTrace();  // Log error details
             }
         });
 

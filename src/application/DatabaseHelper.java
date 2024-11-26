@@ -369,14 +369,30 @@ public class DatabaseHelper {
     }
 
     // Method to remove a user from the database by their ID
-    public void removeUserById(int id) throws SQLException {
-        String deleteSQL = "DELETE FROM cse360users WHERE id = ?";
-            try (PreparedStatement pstmt = connection.prepareStatement(deleteSQL)) {
-                pstmt.setInt(1, id);
-                pstmt.executeUpdate();
+    public void removeUserById(int userId) throws SQLException {
+        String query = "SELECT id FROM cse360users ORDER BY id ASC LIMIT 1";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                int adminId = rs.getInt("id");
+                if (userId == adminId) {
+                    System.out.println("Cannot delete the admin user (the first registered user).");
+                    return;
+                }
             }
+        }
+        
+        String deleteQuery = "DELETE FROM cse360users WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(deleteQuery)) {
+            pstmt.setInt(1, userId);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("User deleted successfully.");
+            } else {
+                System.out.println("No user found with the provided ID.");
+            }
+        }
     }
-
 
     /**
      * Closes the database connection.

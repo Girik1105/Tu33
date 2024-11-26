@@ -26,6 +26,8 @@ import javafx.stage.Stage;
 
 public class StudentDashboard {
 	private Scene scene;
+	private Stage stage;
+	private DatabaseHelper dashboard;
 
 	/*****
 	 * Constructor sets up the student dashboard. It displays the student's basic
