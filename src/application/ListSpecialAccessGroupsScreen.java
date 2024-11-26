@@ -89,11 +89,15 @@ public class ListSpecialAccessGroupsScreen extends VBox {
         Button createGroupButton = new Button("Create New Group");
         createGroupButton.setOnAction(e -> stage.setScene(new Scene(new CreateSpecialAccessGroupScreen(stage, databaseHelper), 500, 400)));
 
+        // Remove Special Access Group
+        Button removeGroupButton = new Button("Remove Group");
+        removeGroupButton.setOnAction(e -> stage.setScene(new Scene(new CreateSpecialAccessGroupScreen(stage, databaseHelper), 500, 400)));
+        
         // Back Button to return to the Dashboard
         Button backButton = new Button("Back to Dashboard");
         backButton.setOnAction(e -> stage.setScene(new Scene(new Dashboard(stage, databaseHelper), 500, 400)));
 
         // Add all buttons and components to the VBox
-        getChildren().addAll(headerLabel, groupListView, viewArticlesButton, addUserButton, updateUserButton, removeUserButton, addArticlesButton, createGroupButton, backButton);
+        getChildren().addAll(headerLabel, groupListView, viewArticlesButton, addUserButton, updateUserButton, removeUserButton, addArticlesButton, createGroupButton, removeGroupButton, backButton);
     }
 }

@@ -30,6 +30,7 @@ class Group {
                 "John Steinbeck",              // Author
                 "Great Depression",
                 "American Dream",
+                "Historical Fiction", 
                 "Steinbeck" // Reference
             );
             articles.add(defaultArticle);  // Add default article
@@ -54,158 +55,176 @@ class Group {
     }
 }
 
-// Article1 class for managing individual article details
+// Article1 class for managing individual article details\
 class Article1 {
-    private String title;
-    private String author;
-    private String abstractText;
-    private String keywords;
-    private String references;  // Added reference field
+ private String title;
+ private String author;
+ private String abstractText;
+ private String body; // Added body field
+ private String keywords;
+ private String references;
 
-    public Article1(String title, String author, String abstractText, String keywords, String references) {
-        this.title = title;
-        this.author = author;
-        this.abstractText = abstractText;
-        this.keywords = keywords;
-        this.references = references;
-    }
+ public Article1(String title, String author, String abstractText, String keywords, String references, String body) {
+     this.title = title;
+     this.author = author;
+     this.abstractText = abstractText;
+     this.body = body; // Initialize body
+     this.keywords = keywords;
+     this.references = references;
 
-    public String getTitle() {
-        return title;
-    }
+ }
 
-    public String getAuthor() {
-        return author;
-    }
+ public String getTitle() {
+     return title;
+ }
 
-    public String getAbstractText() {
-        return abstractText;
-    }
+ public String getAuthor() {
+     return author;
+ }
 
-    public String getKeywords() {
-        return keywords;
-    }
+ public String getAbstractText() {
+     return abstractText;
+ }
+ 
+ public String getBody() {
+     return body; // Getter for body
+ }
 
-    public String getReferences() {
-        return references;  // Get references
-    }
+ public String getKeywords() {
+     return keywords;
+ }
 
-    @Override
-    public String toString() {
-        return title + " by " + author;
-    }
+ public String getReferences() {
+     return references;
+ }
+
+ @Override
+ public String toString() {
+     return title + " by " + author;
+ }
 }
 
 // Group Articles Management Screen for Instructors
+//Updated GroupArticlesScreen class
 class GroupArticlesScreen extends VBox {
 
-    public GroupArticlesScreen(Stage stage, Group group, DatabaseHelper databaseHelper) {
-        setAlignment(Pos.CENTER);
-        setPadding(new Insets(20));
-        setSpacing(10);
+ public GroupArticlesScreen(Stage stage, Group group, DatabaseHelper databaseHelper) {
+     setAlignment(Pos.CENTER);
+     setPadding(new Insets(20));
+     setSpacing(10);
 
-        Label headerLabel = new Label("Articles in " + group.getName());
-        ListView<Article1> articleListView = new ListView<>(group.getArticles());
+     Label headerLabel = new Label("Articles in " + group.getName());
+     ListView<Article1> articleListView = new ListView<>(group.getArticles());
 
-        /*// Button to add a new article
-        Button addArticleButton = new Button("Add Article");
-        addArticleButton.setOnAction(e -> {
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Add Article");
-            dialog.setHeaderText("Enter Article Details (Title; Author; Abstract; Keywords; References)");
+     // Fields for article details
+     Label articleDetailsLabel = new Label("Enter Article Details:");
+     TextField titleField = new TextField();
+     titleField.setPromptText("Title");
 
-            dialog.showAndWait().ifPresent(input -> {
-                String[] details = input.split(";");
-                if (details.length >= 5) {
-                    Article1 article = new Article1(details[0], details[1], details[2], details[3], details[4]);
-                    group.getArticles().add(article);  // Add the new article to the group
-                    articleListView.setItems(group.getArticles()); // Refresh the ListView
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input. Format: Title; Author; Abstract; Keywords; References");
-                    alert.show();
-                }
-            });
-        });*/
+     TextField authorField = new TextField();
+     authorField.setPromptText("Author");
 
-        // Label for article input section
-        Label articleDetailsLabel = new Label("Enter Article Details:");
+     TextField abstractField = new TextField();
+     abstractField.setPromptText("Abstract");
+     
+     TextArea bodyField = new TextArea(); // TextArea for the body field
+     bodyField.setPromptText("Body");
 
-        // Create text fields for article details
-        TextField titleField = new TextField();
-        titleField.setPromptText("Title");
+     TextField keywordsField = new TextField();
+     keywordsField.setPromptText("Keywords");
 
-        TextField authorField = new TextField();
-        authorField.setPromptText("Author");
+     TextField referencesField = new TextField();
+     referencesField.setPromptText("References");
 
-        TextField abstractField = new TextField();
-        abstractField.setPromptText("Abstract");
+     // Add Article Button
+     Button addArticleFromFieldsButton = new Button("Add Article");
+     addArticleFromFieldsButton.setOnAction(e -> {
+         String title = titleField.getText();
+         String author = authorField.getText();
+         String abstractText = abstractField.getText();
+         String keywords = keywordsField.getText();
+         String references = referencesField.getText();
+         String body = bodyField.getText();
 
-        TextField keywordsField = new TextField();
-        keywordsField.setPromptText("Keywords");
+         if (!title.isEmpty() && !author.isEmpty() && !abstractText.isEmpty() && 
+             !keywords.isEmpty() && !references.isEmpty() && !body.isEmpty()) {
+             Article1 newArticle = new Article1(title, author, abstractText, keywords, references, body);
+             group.getArticles().add(newArticle); // Add article to group
+             articleListView.setItems(group.getArticles()); // Refresh ListView
+             clearFields(titleField, authorField, abstractField, keywordsField, referencesField, bodyField);
+         } else {
+             Alert alert = new Alert(Alert.AlertType.ERROR, "Please fill in all fields.");
+             alert.show();
+         }
+     });
 
-        TextField referencesField = new TextField();
-        referencesField.setPromptText("References");
+     // Delete Article Button
+     Button deleteArticleButton = new Button("Delete Selected Article");
+     deleteArticleButton.setOnAction(e -> {
+         Article1 selectedArticle = articleListView.getSelectionModel().getSelectedItem();
+         if (selectedArticle != null) {
+             group.getArticles().remove(selectedArticle); // Remove the selected article
+             articleListView.setItems(group.getArticles()); // Refresh ListView
+         } else {
+             Alert alert = new Alert(Alert.AlertType.ERROR, "No article selected to delete.");
+             alert.show();
+         }
+     });
+     
+     Button editButton = new Button("Edit Selected Article");
+     editButton.setOnAction(e -> {
+         Article1 selectedArticle = articleListView.getSelectionModel().getSelectedItem();
+         if (selectedArticle != null) {
+             group.getArticles().remove(selectedArticle); // Remove the selected article
+             articleListView.setItems(group.getArticles()); // Refresh ListView
+         } else {
+             Alert alert = new Alert(Alert.AlertType.ERROR, "No article selected to delete.");
+             alert.show();
+         }
+     });
 
-        //Button to add new article to the group (using text fields)
-        Button addArticleFromFieldsButton = new Button("Add Article");
-        addArticleFromFieldsButton.setOnAction(e -> {
-            String title = titleField.getText();
-            String author = authorField.getText();
-            String abstractText = abstractField.getText();
-            String keywords = keywordsField.getText();
-            String references = referencesField.getText();
+     // View Article Details Button
+     Button viewArticleButton = new Button("View Article Details");
+     viewArticleButton.setOnAction(e -> {
+         Article1 selectedArticle = articleListView.getSelectionModel().getSelectedItem();
+         if (selectedArticle != null) {
+             stage.setScene(new Scene(new ArticleDetailScreen(stage, group, selectedArticle, databaseHelper), 500, 400));
+         }
+     });
 
-            // Ensure that all fields have been filled
-            if (!title.isEmpty() && !author.isEmpty() && !abstractText.isEmpty() && !keywords.isEmpty() && !references.isEmpty()) {
-                // Create a new article and add it to the group
-                Article1 newArticle = new Article1(title, author, abstractText, keywords, references);
-                group.getArticles().add(newArticle);  // Add article to group
-                articleListView.setItems(group.getArticles()); // Refresh the ListView
-                clearFields(titleField, authorField, abstractField, keywordsField, referencesField); // Clear input fields
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Please fill in all fields.");
-                alert.show();
-            }
-        });
+     // Back Button
+     Button backButton = new Button("Back");
+     backButton.setOnAction(e -> stage.setScene(new Scene(new InstructorDashboard(stage, databaseHelper), 500, 400)));
 
-        // Button to go back to the previous screen
-        Button backButton = new Button("Back");
-        backButton.setOnAction(e -> stage.setScene(new Scene(new InstructorDashboard(stage, databaseHelper), 500, 400)));
-
-        // Button to view selected article details
-        Button viewArticleButton = new Button("View Article Details");
-        viewArticleButton.setOnAction(e -> {
-            Article1 selectedArticle = articleListView.getSelectionModel().getSelectedItem();
-            if (selectedArticle != null) {
-                stage.setScene(new Scene(new ArticleDetailScreen(stage, group, selectedArticle, databaseHelper), 500, 400));
-            }
-        });
-
-        // Add components to the layout
-        getChildren().addAll(
-            headerLabel, 
-            articleListView, 
-            //addArticleButton, 
-            articleDetailsLabel, 
-            titleField, 
-            authorField, 
-            abstractField, 
-            keywordsField, 
-            referencesField, 
-            addArticleFromFieldsButton, 
-            viewArticleButton, 
-            backButton
-        );
-    }
-
-    // Helper method to clear the input fields after adding an article
-    private void clearFields(TextField titleField, TextField authorField, TextField abstractField, TextField keywordsField, TextField referencesField) {
-        titleField.clear();
-        authorField.clear();
-        abstractField.clear();
-        keywordsField.clear();
-        referencesField.clear();
-    }
+     // Layout
+     getChildren().addAll(
+         headerLabel, 
+         articleListView, 
+         articleDetailsLabel, 
+         titleField, 
+         authorField, 
+         abstractField, 
+         keywordsField, 
+         referencesField, 
+         bodyField, 
+         addArticleFromFieldsButton,
+         editButton,
+         deleteArticleButton, 
+         viewArticleButton, 
+         backButton
+     );
+ }
+ 
+//Helper method to clear the input fields after adding an article
+ private void clearFields(TextField titleField, TextField authorField, TextField abstractField, 
+                          TextField keywordsField, TextField referencesField, TextArea bodyField) {
+     titleField.clear();
+     authorField.clear();
+     abstractField.clear();
+     keywordsField.clear();
+     referencesField.clear();
+     bodyField.clear(); // Clear body field
+ }
 }
 
 // ArticleDetailScreen class for viewing article details
@@ -221,13 +240,14 @@ class ArticleDetailScreen extends VBox {
         Label titleLabelText = new Label("Title: " + article.getTitle());
         Label authorLabel = new Label("Author: " + article.getAuthor());
         Label abstractLabel = new Label("Abstract: " + article.getAbstractText());
+        Label bodyLabel = new Label("Body: " + article.getBody()); // Display body
         Label keywordsLabel = new Label("Keywords: " + article.getKeywords());
-        Label referencesLabel = new Label("References: " + article.getReferences());  // Show references
+        Label referencesLabel = new Label("References: " + article.getReferences());
 
         Button backButton = new Button("Back");
-        backButton.setOnAction(e -> stage.setScene(new Scene(new GroupArticlesScreen(stage, group, databaseHelper), 500, 400)));
+        backButton.setOnAction(e -> stage.setScene(new Scene(new GroupArticlesScreen(stage, group, databaseHelper), 500, 600)));
 
-        getChildren().addAll(titleLabel, titleLabelText, authorLabel, abstractLabel, keywordsLabel, referencesLabel, backButton);
+        getChildren().addAll(titleLabel, titleLabelText, authorLabel, abstractLabel, bodyLabel, keywordsLabel, referencesLabel, backButton);
     }
 }
 
@@ -265,15 +285,51 @@ public class ListSpecialAccessGroups2 extends VBox {
                     Alert alert = new Alert(Alert.AlertType.WARNING, "You don't have access to this group!");
                     alert.show();
                 } else {
-                    stage.setScene(new Scene(new GroupArticlesScreen(stage, selectedGroup, databaseHelper), 500, 400));
+                    stage.setScene(new Scene(new GroupArticlesScreen(stage, selectedGroup, databaseHelper), 500, 1000));
                 }
             }
         });
+        // Add User to the selected group
+        Button addUserButton = new Button("Add User to Group");
+        addUserButton.setOnAction(e -> {
+            Group selectedGroup = groupListView.getSelectionModel().getSelectedItem();
+            if (selectedGroup != null) {
+                stage.setScene(new Scene(new ManageGroupUserScreen(stage, databaseHelper, selectedGroup.getId(), "add"), 500, 400));
+            } else {
+                System.out.println("No group selected.");
+            }
+        });
 
-        Button backButton = new Button("Back to Login");
+        // Update User Permissions in the selected group
+        Button updateUserButton = new Button("Update User Permissions");
+        updateUserButton.setOnAction(e -> {
+            Group selectedGroup = groupListView.getSelectionModel().getSelectedItem();
+            if (selectedGroup != null) {
+                stage.setScene(new Scene(new ManageGroupUserScreen(stage, databaseHelper, selectedGroup.getId(), "update"), 500, 400));
+            } else {
+                System.out.println("No group selected.");
+            }
+        });
+
+        // Remove User from the selected group
+        Button removeUserButton = new Button("Remove User from Group");
+        removeUserButton.setOnAction(e -> {
+            Group selectedGroup = groupListView.getSelectionModel().getSelectedItem();
+            if (selectedGroup != null) {
+                stage.setScene(new Scene(new ManageGroupUserScreen(stage, databaseHelper, selectedGroup.getId(), "remove"), 500, 400));
+            } else {
+                System.out.println("No group selected.");
+            }
+        });
+        
+        // Remove Special Access Group
+        Button removeGroupButton = new Button("Remove Group");
+        removeGroupButton.setOnAction(e -> stage.setScene(new Scene(new CreateSpecialAccessGroupScreen(stage, databaseHelper), 500, 400)));
+        
+        Button backButton = new Button("Back");
         backButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
-        backButton.setOnAction(e -> stage.setScene(new Scene(new InstructorDashboard(stage, databaseHelper), 400, 300)));
+        backButton.setOnAction(e -> stage.setScene(new Scene(new InstructorDashboard(stage, databaseHelper), 500, 600)));
 
-        getChildren().addAll(headerLabel, groupListView, addGroupButton, viewGroupButton, backButton);
+        getChildren().addAll(headerLabel, groupListView, addUserButton, updateUserButton, removeUserButton, addGroupButton, viewGroupButton, removeGroupButton, backButton);
     }
 }

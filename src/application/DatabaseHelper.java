@@ -1092,6 +1092,8 @@ public void addGroupAdmin(int groupId, int userId) throws SQLException {
             pstmt.executeUpdate();
         }
     }
+    
+    
 
     // Update user permissions in a special access group
     public void updateUserPermissionsInSpecialGroup(int groupId, int userId, boolean canViewBody, boolean isAdmin) throws SQLException {
