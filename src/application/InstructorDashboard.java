@@ -140,12 +140,12 @@ public class InstructorDashboard extends VBox {
             stage.setScene(new Scene(new DeleteArticleScreen(stage, databaseHelper), 500, 400));
         });
 
-        // Button to navigate to List Articles screen
+        /*/ Button to navigate to List Articles screen
         Button listArticlesButton = new Button("List Articles");
         listArticlesButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
         listArticlesButton.setOnAction(e -> {
-            stage.setScene(new Scene(new ListArticleScreen(stage, databaseHelper), 500, 400));
-        });
+            stage.setScene(new Scene(new ListSpecialAccessGroups2(stage, databaseHelper), 500, 400));
+        });*/
         
         // Button to list special access groups
         Button listGroupsButton = new Button("List Special Access Groups");

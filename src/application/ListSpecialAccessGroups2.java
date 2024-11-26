@@ -24,7 +24,7 @@ class Group {
         this.name = name;
         
         // Default article added when the group is created
-        if (id == 2) {  // Check if this is Group 2
+        if (id == 3) {  // Check if this is Group 3
             Article1 defaultArticle = new Article1(
                 "Of Mice and Men",              // Title
                 "John Steinbeck",              // Author
@@ -261,7 +261,7 @@ public class ListSpecialAccessGroups2 extends VBox {
             Group selectedGroup = groupListView.getSelectionModel().getSelectedItem();
             if (selectedGroup != null) {
                 // Check if the user is trying to access Group 1 or Group 3
-                if (selectedGroup.getId() == 1 || selectedGroup.getId() == 3) {
+                if (selectedGroup.getId() == 1 || selectedGroup.getId() == 2) {
                     Alert alert = new Alert(Alert.AlertType.WARNING, "You don't have access to this group!");
                     alert.show();
                 } else {
