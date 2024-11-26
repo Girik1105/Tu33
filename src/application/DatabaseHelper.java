@@ -783,15 +783,31 @@ public class DatabaseHelper {
             pstmt.executeUpdate();
         }
     }
-
-    public void addStudentToSpecialGroup(int groupId, int userId, boolean canViewBody) throws SQLException {
-        String sql = "INSERT INTO special_access_group_students (group_id, user_id, can_view_body) VALUES (?, ?, ?)";
-        try (var pstmt = getConnection().prepareStatement(sql)) {
-            pstmt.setInt(1, groupId);
-            pstmt.setInt(2, userId);
-            pstmt.setBoolean(3, canViewBody);
-            pstmt.executeUpdate();
+    
+ // Instructor gets student names
+    public List<String> getStudentNames() throws SQLException {
+        List<String> studentNames = new ArrayList<>();
+        String query = "SELECT firstName, middleName, lastName, preferredName FROM cse360users";
+        
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            
+            while (rs.next()) {
+                String firstName = rs.getString("firstName");
+                String middleName = rs.getString("middleName");
+                String lastName = rs.getString("lastName");
+                String preferredName = rs.getString("preferredName");
+                
+                // Construct the full name, prioritizing preferredName if available
+                String fullName = (preferredName != null && !preferredName.isEmpty()) 
+                                  ? preferredName 
+                                  : firstName + " " + (middleName != null && !middleName.isEmpty() ? middleName + " " : "") + lastName;
+                
+                studentNames.add(fullName.trim());
+            }
         }
+        
+        return studentNames;
     }
 
 /**
