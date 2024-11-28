@@ -40,7 +40,7 @@ public class StartCSE360 extends Application {
 
         // Check if admin setup is complete, otherwise show admin registration
         if (!databaseHelper.isAdminSetupComplete()) {
-            primaryStage.setScene(new Scene(new AdminRegistrationScreen(primaryStage, databaseHelper), 400, 300));
+            primaryStage.setScene(new Scene(new AdminRegistrationScreen(primaryStage, databaseHelper), 500, 400));
             primaryStage.show();
         } else {
             showLoginScreen(primaryStage, databaseHelper); // Show login screen if admin setup is complete

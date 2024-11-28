@@ -27,6 +27,22 @@ public class AddArticlesToGroupScreen extends VBox {
         // TextField for entering Article Title
         TextField articleTitleField = new TextField(); // Declare and initialize the article title field
         articleTitleField.setPromptText("Enter Article Title");
+        
+        // TextField for entering Article authors
+        TextField authorsField = new TextField(); // Declare and initialize the article title field
+        authorsField.setPromptText("Enter author(s)");
+        
+        // TextField for entering Article abstract
+        TextField abstractField = new TextField(); // Declare and initialize the article title field
+        abstractField.setPromptText("Enter abstract(s)");
+        
+        // TextField for entering Article keywords
+        TextField keywordsField = new TextField(); // Declare and initialize the article title field
+        keywordsField.setPromptText("Enter keyword(s)");
+        
+        // TextField for entering Article references
+        TextField refField = new TextField(); // Declare and initialize the article title field
+        refField.setPromptText("Enter reference(s)");
 
         // TextArea for entering Article Body
         TextArea articleBodyArea = new TextArea();
@@ -67,6 +83,6 @@ public class AddArticlesToGroupScreen extends VBox {
         backButton.setOnAction(e -> stage.setScene(new Scene(new Dashboard(stage, databaseHelper), 500, 400)));
 
         // Adding all elements to the VBox
-        getChildren().addAll(headerLabel, groupIdField, articleTitleField, articleBodyArea, addArticleButton, backButton);
+        getChildren().addAll(headerLabel, groupIdField, articleTitleField, authorsField, abstractField, keywordsField, articleBodyArea, refField, addArticleButton, backButton);
     }
 }

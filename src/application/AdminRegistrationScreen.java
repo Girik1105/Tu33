@@ -13,13 +13,10 @@ import javafx.stage.Stage;
 public class AdminRegistrationScreen extends VBox {
 
     public AdminRegistrationScreen(Stage stage, DatabaseHelper databaseHelper) {
-        // Constructor initializes the instructor registration screen UI
-        VBox title = new VBox(); // Container for title section
-        title.setPadding(new Insets(10)); // Set padding for title section
-        title.setAlignment(Pos.CENTER); // Center-align title
-        title.setStyle(StartCSE360.blueBackground); // Apply blue background style
     	
         Label titleLabel = new Label("Admin Registration");
+        titleLabel.setStyle(StartCSE360.h1); // Apply title text styling
+        
         TextField emailField = new TextField();
         emailField.setPromptText("Enter Admin Email");
         PasswordField passwordField = new PasswordField();
@@ -44,6 +41,7 @@ public class AdminRegistrationScreen extends VBox {
         setStyle("-fx-background-color: floralwhite;");
 
         Button registerButton = new Button("Register");
+        registerButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
 
         registerButton.setOnAction(e -> {
             String email = emailField.getText();
@@ -87,10 +85,12 @@ public class AdminRegistrationScreen extends VBox {
                 ex.printStackTrace();
             }
         });
-        Button backButton = new Button("Back to Dashboard");
-        backButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));
+        Button contButton = new Button("Continue to Login");
+        contButton.setStyle(StartCSE360.blueBackground + StartCSE360.h3bold);
+
+        contButton.setOnAction(e -> stage.setScene(new Scene(new LoginScreen(stage, databaseHelper), 400, 300)));
         setAlignment(Pos.CENTER);
-        getChildren().addAll(title, titleLabel, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton, backButton); // Add components to VBox
+        getChildren().addAll(titleLabel, emailField, passwordField, firstNameField, middleNameField, lastNameField, preferredNameField, registerButton, contButton); // Add components to VBox
         setSpacing(10);
     }
     

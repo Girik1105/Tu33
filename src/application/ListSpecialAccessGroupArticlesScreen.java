@@ -32,8 +32,8 @@ public class ListSpecialAccessGroupArticlesScreen extends VBox {
         }
 
         // Back button to return to the Dashboard
-        Button backButton = new Button("Back to Dashboard");
-        backButton.setOnAction(e -> stage.setScene(new Scene(new Dashboard(stage, databaseHelper), 500, 400)));
+        Button backButton = new Button("Back");
+        backButton.setOnAction(e -> stage.setScene(new Scene(new ListSpecialAccessGroupsScreen(stage, databaseHelper), 500, 400)));
 
         getChildren().addAll(headerLabel, articleListView, backButton);
     }
